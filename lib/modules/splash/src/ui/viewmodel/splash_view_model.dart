@@ -11,7 +11,7 @@ class SplashViewModel extends BaseViewModel {
   void startSplash() async {
     setLoading(true);
     await _delaySplashUseCase.execute();
-    Modular.to.pushNamed('/home/');
+    Modular.to.pushNamed('/auth/');
     setLoading(false);
   }
 }
