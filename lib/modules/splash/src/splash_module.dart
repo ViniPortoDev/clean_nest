@@ -12,6 +12,11 @@ class SplashModule extends Module {
 
   @override
   void routes(r) {
-    r.child('/', child: (context) => const SplashPage());
+    r.child(
+      '/',
+      child: (context) => SplashPage(
+        splashViewModel: context.read(),
+      ),
+    );
   }
 }
