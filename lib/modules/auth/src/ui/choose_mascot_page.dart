@@ -19,10 +19,111 @@ class ChooseMascotPage extends StatelessWidget {
     final themeSpacing = theme.extension<CnSpacing>();
     final size = MediaQuery.of(context).size;
     return CnScaffoldWidget(
-      appBar: CnAppBarWidget(title: 'Escolha o mascote', showBackButton: true),
+      appBar: const CnAppBarWidget(
+          title: 'Escolha o mascote', showBackButton: true),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [],
+        children: [
+          const CnTextWidget(
+              text:
+                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ut magna quis metus ullamcorper ullamcorper. Vivamus commodo condimentum leo, vel imperdiet metus ullamcorper nec. Nam suscipit lorem vitae pharetra feugiat.'),
+          SizedBox(height: themeSpacing!.spacing24px),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                height: 50,
+                width: 50,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: cnColorScheme.cnPink,
+                ),
+                child: const Center(
+                  child: CnTextWidget(
+                    text: '2',
+                  ),
+                ),
+              ),
+              SizedBox(width: themeSpacing!.spacing24px),
+              Container(
+                height: 50,
+                width: 50,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: cnColorScheme.cnPink,
+                ),
+                child: const Center(
+                  child: CnTextWidget(
+                    text: '1',
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: themeSpacing.spacing24px),
+          CnTextWidget(text: 'Escolha o seu mascote'),
+          SizedBox(height: themeSpacing.spacing24px),
+          Wrap(
+            spacing: 16,
+            runSpacing: 16,
+            children: [
+              Container(
+                width: size.width * 0.2,
+                height: size.width * 0.2,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: cnColorScheme.cnBlack),
+                ),
+              ),
+              Container(
+                width: size.width * 0.2,
+                height: size.width * 0.2,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: cnColorScheme.cnBlack),
+                ),
+              ),
+              Container(
+                width: size.width * 0.2,
+                height: size.width * 0.2,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: cnColorScheme.cnBlack),
+                ),
+              ),
+              Container(
+                width: size.width * 0.2,
+                height: size.width * 0.2,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: cnColorScheme.cnBlack),
+                ),
+              ),
+              Container(
+                width: size.width * 0.2,
+                height: size.width * 0.2,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: cnColorScheme.cnBlack),
+                ),
+              ),
+              Container(
+                width: size.width * 0.2,
+                height: size.width * 0.2,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: cnColorScheme.cnBlack),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: themeSpacing.spacing24px),
+          CnPrimaryButtonWidget(
+            title: 'Continuar',
+            onPressed: () {},
+            height: 70,
+          ),
+        ],
       ),
     );
   }
