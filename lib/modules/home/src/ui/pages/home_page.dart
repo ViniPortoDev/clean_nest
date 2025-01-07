@@ -2,8 +2,10 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:clean_nest/core/themes/theme_spacings.dart';
 import 'package:clean_nest/core/themes/theme_text_styles.dart';
 import 'package:clean_nest/core/themes/themes.dart';
+import 'package:clean_nest/modules/home/src/ui/widgets/select_group_widget.dart';
 import 'package:clean_nest/shared/widgets/cn_appbar_widget.dart';
 import 'package:clean_nest/shared/widgets/cn_scaffold_widget.dart';
+import 'package:clean_nest/shared/widgets/texts/cn_text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -46,14 +48,73 @@ class _HomePageState extends State<HomePage> {
           _selectedIndex = index;
         }),
       ),
-      appBar: const CnAppBarWidget(title: 'Home Page', showBackButton: true),
+      appBar: AppBar(
+        centerTitle: true,
+        title: SelectedGroupWidget(
+          groupName: "Familia Porto", // Nome do grupo selecionado.
+          onTap: () {
+            showModalBottomSheet(
+              context: context,
+              builder: (context) => Container(
+                padding: const EdgeInsets.all(16),
+                height: 300,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text("Opções de Grupos", style: TextStyle(fontSize: 18)),
+                    // Adicione widgets aqui
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Center(
-            child: IconButton(
-                onPressed: () => Modular.to.pushNamed('add_task'),
-                icon: Icon(Icons.add)),
+          CnTextWidget(
+              text: 'Olá Vinicius Porto',
+              textStyle: themeTextStyle!.textLMedium),
+          CnTextWidget(text: 'Bem vindo ao Clean Nest'),
+          SizedBox(height: themeSpacing!.spacing16px),
+          Container(
+            height: 160,
+            width: size.width,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: cnColorScheme.cnBlack),
+            ),
+            child: Center(child: CnTextWidget(text: '3 Banners')),
+          ),
+          SizedBox(height: themeSpacing.spacing32px),
+          Container(
+            height: 200,
+            width: size.width,
+            decoration: BoxDecoration(
+              color: Color.fromARGB(255, 211, 197, 248),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.add,
+                  size: 80,
+                  color: cnColorScheme.primary,
+                ),
+                // SizedBox(height: themeSpacing.spacing8px),
+                CnTextWidget(
+                  text: 'Adicione uma tarefa',
+                  textStyle: themeTextStyle.textMMedium!
+                      .copyWith(color: cnColorScheme.primary),
+                ),
+                SizedBox(height: themeSpacing.spacing4px),
+
+                CnTextWidget(
+                    text: 'Comece adicionando a sua primeira tarefa',
+                    textStyle: themeTextStyle.textTMedium),
+              ],
+            ),
           ),
         ],
       ),
