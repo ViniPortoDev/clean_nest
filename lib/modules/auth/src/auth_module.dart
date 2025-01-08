@@ -1,6 +1,7 @@
 import 'package:clean_nest/modules/auth/src/domain/repositories/choose_mascot_repository.dart';
 import 'package:clean_nest/modules/auth/src/data/repositories/choose_mascot_repository_impl.dart';
 import 'package:clean_nest/modules/auth/src/ui/pages/choose_mascot_page.dart';
+import 'package:clean_nest/modules/auth/src/ui/pages/create_rotine_group_page.dart';
 import 'package:clean_nest/modules/auth/src/ui/pages/sign_in_page.dart';
 import 'package:clean_nest/modules/auth/src/ui/pages/sign_up_page.dart';
 import 'package:clean_nest/modules/auth/src/ui/viewmodels/choose_mascot_viewmodel.dart';
@@ -16,7 +17,7 @@ class AuthModule extends Module {
 
   @override
   void routes(r) {
-    r.child('/', child: (context) => const SignInPage());
+    r.child('/create_rotine_group', child: (context) => const SignInPage());
     r.child('/sign_up', child: (context) => const SignUpPage());
     r.child(
       '/choose_mascot',
@@ -24,5 +25,6 @@ class AuthModule extends Module {
         chooseMascotViewModel: context.read()..loadMascots(),
       ),
     );
+    r.child('/', child: (context) => const CreateRotineGroupPage());
   }
 }
