@@ -1,6 +1,5 @@
 import 'package:clean_nest/modules/auth/src/domain/repositories/choose_mascot_repository.dart';
 import 'package:clean_nest/modules/auth/src/data/repositories/choose_mascot_repository_impl.dart';
-import 'package:clean_nest/modules/auth/src/domain/usecases/select_mascot_usecase.dart';
 import 'package:clean_nest/modules/auth/src/ui/pages/choose_mascot_page.dart';
 import 'package:clean_nest/modules/auth/src/ui/pages/sign_in_page.dart';
 import 'package:clean_nest/modules/auth/src/ui/pages/sign_up_page.dart';
