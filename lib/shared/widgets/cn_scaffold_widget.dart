@@ -9,6 +9,7 @@ class CnScaffoldWidget extends StatelessWidget {
   final Widget? bottomNavigationBar;
   final bool resizeToAvoidBottomInset;
   final bool safeArea;
+  final FloatingActionButtonLocation? floatingActionButtonLocation;
 
   const CnScaffoldWidget({
     super.key,
@@ -19,7 +20,8 @@ class CnScaffoldWidget extends StatelessWidget {
     this.floatingActionButton,
     this.bottomNavigationBar,
     this.resizeToAvoidBottomInset = true,
-    this.safeArea = true, // Por padrão, será true, ou seja, usa o SafeArea
+    this.safeArea = true,
+    this.floatingActionButtonLocation, 
   });
 
   @override
@@ -42,6 +44,7 @@ class CnScaffoldWidget extends StatelessWidget {
             ),
       floatingActionButton: floatingActionButton,
       bottomNavigationBar: bottomNavigationBar,
+      floatingActionButtonLocation: floatingActionButtonLocation,
     );
   }
 }

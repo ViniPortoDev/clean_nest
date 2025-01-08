@@ -9,7 +9,7 @@ class _CnThemeColors {
   static const Color cnCyanLight = Color(0xffDCF7FF);
   static const Color cnDarkBlue = Color(0xff123382);
   static const Color cnLightBlue = Color(0xffCFDAF0);
-  static const Color cnPurple = Color(0xff6531BD);
+  static const Color cnPurple = Color(0xff6734f0);
   static const Color cnDarkPurple = Color(0xff32185E);
   static const Color cnPink = Color(0xffF660A3);
   static const Color cnRed = Color(0xffFF3C3C);
@@ -52,9 +52,9 @@ class _CnColorScheme extends ColorScheme {
 
   const _CnColorScheme({
     super.brightness = Brightness.light,
-    super.primary = _CnThemeColors.cnBlack,
+    super.primary = _CnThemeColors.cnPurple,
     super.onPrimary = _CnThemeColors.cnWhite,
-    super.secondary = _CnThemeColors.cnPurple,
+    super.secondary = _CnThemeColors.cnBlack,
     super.onSecondary = _CnThemeColors.cnWhite,
     super.error = _CnThemeColors.cnErro,
     super.onError = _CnThemeColors.cnWhite,
