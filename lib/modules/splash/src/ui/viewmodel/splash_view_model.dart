@@ -1,17 +1,26 @@
 // presentation/splash/splash_viewmodel.dart
+import 'package:clean_nest/core/data/repositories/shared_preferences_repository.dart';
 import 'package:clean_nest/core/viewmodel/base_view_model.dart';
 import 'package:clean_nest/modules/splash/src/usecases/delay_splash_use_case.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class SplashViewModel extends BaseViewModel {
-  final DelaySplashUseCase _delaySplashUseCase;
+  final DelaySplashUseCase delaySplashUseCase;
+  final SharedPreferencesRepository sharedPrefsRepo;
 
-  SplashViewModel(this._delaySplashUseCase);
+  SplashViewModel(
+      {required this.delaySplashUseCase, required this.sharedPrefsRepo});
 
   void startSplash() async {
     setLoading(true);
-    await _delaySplashUseCase.execute();
-    Modular.to.pushNamed('/auth/');
+    await delaySplashUseCase.execute();
+    bool isFirstLaunch = sharedPrefsRepo.getBool('isFirstLaunch');
     setLoading(false);
+
+    if (isFirstLaunch) {
+      Modular.to.pushNamed('/onboarding/');
+    } else {
+      Modular.to.pushNamed('/home/');
+    }
   }
 }

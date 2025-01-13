@@ -2,6 +2,8 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:clean_nest/core/themes/theme_spacings.dart';
 import 'package:clean_nest/core/themes/theme_text_styles.dart';
 import 'package:clean_nest/core/themes/themes.dart';
+import 'package:clean_nest/modules/home/src/ui/viewmodels/task_viewmodel.dart';
+import 'package:clean_nest/modules/home/src/ui/widgets/add_tasks_bottom_sheet_widget.dart';
 import 'package:clean_nest/modules/home/src/ui/widgets/select_group_widget.dart';
 import 'package:clean_nest/shared/widgets/cn_appbar_widget.dart';
 import 'package:clean_nest/shared/widgets/cn_scaffold_widget.dart';
@@ -10,27 +12,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final TaskViewModel taskViewModel;
+  const HomePage({super.key, required this.taskViewModel});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  int _selectedIndex = 1;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final themeTextStyle = theme.extension<CnTextStyles>();
     final themeSpacing = theme.extension<CnSpacing>();
     final size = MediaQuery.of(context).size;
-    int _selectedIndex = 0;
-    List<IconData> listIcon = [Icons.home, Icons.settings, Icons.person];
+    List<IconData> listIcon = [Icons.home, Icons.add, Icons.person];
     final List<Widget> _pages = [
       Container(),
       Container(),
       Container(),
     ];
     return CnScaffoldWidget(
+      backgroundColor: Color.fromARGB(255, 247, 247, 247),
       bottomNavigationBar: AnimatedBottomNavigationBar(
         icons: listIcon,
         activeIndex: _selectedIndex,
@@ -38,8 +43,9 @@ class _HomePageState extends State<HomePage> {
         blurEffect: true,
         elevation: 20,
         height: 65,
-        iconSize: 24,
-        inactiveColor: Colors.white,
+        iconSize: 40,
+
+        inactiveColor: Colors.yellow,
         // rightCornerRadius: 12,
         // leftCornerRadius: 12,
         splashColor: const Color(0xff424242),
@@ -113,6 +119,16 @@ class _HomePageState extends State<HomePage> {
                 CnTextWidget(
                     text: 'Comece adicionando a sua primeira tarefa',
                     textStyle: themeTextStyle.textTMedium),
+
+                ElevatedButton(
+                  onPressed: () => showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    builder: (_) =>
+                        AddTaskBottomSheet(viewModel: widget.taskViewModel),
+                  ),
+                  child: const Text("Adicionar Tarefa"),
+                ),
               ],
             ),
           ),
