@@ -26,7 +26,7 @@ class SignUpPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           InkWell(
-            onTap: () => Modular.to.pushNamed('choose_mascot'),
+            onTap: () => Modular.to.pushNamed('setup_profile'),
             child: Container(
               width: size.width * 0.2,
               height: size.width * 0.2,
@@ -57,7 +57,7 @@ class SignUpPage extends StatelessWidget {
           CnPrimaryButtonWidget(
             title: 'Continuar',
             onPressed: () {
-              Modular.to.pushNamed('/home/');
+              Modular.to.pushNamed('setup_profile');
             },
             height: 70,
           ),
