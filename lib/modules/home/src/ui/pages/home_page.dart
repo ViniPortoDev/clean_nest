@@ -1,74 +1,42 @@
-import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
-import 'package:clean_nest/core/themes/theme_spacings.dart';
-import 'package:clean_nest/core/themes/theme_text_styles.dart';
-import 'package:clean_nest/core/themes/themes.dart';
+import 'package:clean_nest/modules/home/src/domain/entities/task.dart';
 import 'package:clean_nest/modules/home/src/ui/viewmodels/task_viewmodel.dart';
-import 'package:clean_nest/modules/home/src/ui/widgets/add_tasks_bottom_sheet_widget.dart';
+import 'package:clean_nest/modules/home/src/ui/widgets/add_task_container_widget.dart';
 import 'package:clean_nest/modules/home/src/ui/widgets/select_group_widget.dart';
-import 'package:clean_nest/shared/widgets/cn_appbar_widget.dart';
-import 'package:clean_nest/shared/widgets/cn_scaffold_widget.dart';
-import 'package:clean_nest/shared/widgets/texts/cn_text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:clean_nest/core/domain/entities/member.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   final TaskViewModel taskViewModel;
   const HomePage({super.key, required this.taskViewModel});
 
   @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 1;
-
-  @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final themeTextStyle = theme.extension<CnTextStyles>();
-    final themeSpacing = theme.extension<CnSpacing>();
-    final size = MediaQuery.of(context).size;
-    List<IconData> listIcon = [Icons.home, Icons.add, Icons.person];
-    final List<Widget> _pages = [
-      Container(),
-      Container(),
-      Container(),
-    ];
-    return CnScaffoldWidget(
-      backgroundColor: Color.fromARGB(255, 247, 247, 247),
-      bottomNavigationBar: AnimatedBottomNavigationBar(
-        icons: listIcon,
-        activeIndex: _selectedIndex,
-        activeColor: cnColorScheme.primary,
-        blurEffect: true,
-        elevation: 20,
-        height: 65,
-        iconSize: 40,
+    final TextEditingController _titleController = TextEditingController();
+    final TextEditingController _descriptionController =
+        TextEditingController();
+    final TextEditingController _typeController = TextEditingController();
 
-        inactiveColor: Colors.yellow,
-        // rightCornerRadius: 12,
-        // leftCornerRadius: 12,
-        splashColor: const Color(0xff424242),
-        // backgroundColor: const Color(0xff424242),
-        onTap: (index) => setState(() {
-          _selectedIndex = index;
-        }),
-      ),
+    final List<Member> _members = [
+      Member(id: 1, name: 'Membro 1', email: '', tasks: []),
+      Member(id: 2, name: 'Membro 2', email: '', tasks: []),
+      Member(id: 3, name: 'Membro 3', email: '', tasks: []),
+    ];
+
+    return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
         title: SelectedGroupWidget(
-          groupName: "Familia Porto", // Nome do grupo selecionado.
+          groupName: taskViewModel.selectedGroup,
           onTap: () {
             showModalBottomSheet(
               context: context,
               builder: (context) => Container(
                 padding: const EdgeInsets.all(16),
                 height: 300,
-                child: Column(
+                child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text("Opções de Grupos", style: TextStyle(fontSize: 18)),
-                    // Adicione widgets aqui
                   ],
                 ),
               ),
@@ -78,60 +46,161 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Column(
         children: [
-          CnTextWidget(
-              text: 'Olá Vinicius Porto',
-              textStyle: themeTextStyle!.textLMedium),
-          CnTextWidget(text: 'Bem vindo ao Clean Nest'),
-          SizedBox(height: themeSpacing!.spacing16px),
-          Container(
-            height: 160,
-            width: size.width,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: cnColorScheme.cnBlack),
-            ),
-            child: Center(child: CnTextWidget(text: '3 Banners')),
-          ),
-          SizedBox(height: themeSpacing.spacing32px),
-          Container(
-            height: 200,
-            width: size.width,
-            decoration: BoxDecoration(
-              color: Color.fromARGB(255, 211, 197, 248),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.add,
-                  size: 80,
-                  color: cnColorScheme.primary,
-                ),
-                // SizedBox(height: themeSpacing.spacing8px),
-                CnTextWidget(
-                  text: 'Adicione uma tarefa',
-                  textStyle: themeTextStyle.textMMedium!
-                      .copyWith(color: cnColorScheme.primary),
-                ),
-                SizedBox(height: themeSpacing.spacing4px),
+          const Text('Olá Vinicius Porto'),
+          const SizedBox(height: 16),
+          // Mostrar o container de adicionar tarefa apenas se não houver tarefas
+          if (taskViewModel.tasks.isEmpty)
+            AddTaskContainerWidget(
+              onTap: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (context) => Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text("Adicionar nova tarefa"),
+                        const SizedBox(height: 16),
+                        TextField(
+                          controller: _titleController,
+                          decoration: const InputDecoration(
+                            labelText: 'Título da Tarefa',
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        TextField(
+                          controller: _descriptionController,
+                          decoration: const InputDecoration(
+                            labelText: 'Descrição',
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        TextField(
+                          controller: _typeController,
+                          decoration: const InputDecoration(
+                            labelText: 'Tipo',
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        DropdownButton<String>(
+                          value: taskViewModel.selectedGroup,
+                          onChanged: (String? newValue) {
+                            taskViewModel.updateGroup(newValue!);
+                          },
+                          items: <String>['Familia Porto']
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                        const SizedBox(height: 16),
+                        DropdownButton<String>(
+                          value: taskViewModel.selectedCategory,
+                          onChanged: (String? newValue) {
+                            taskViewModel.updateCategory(newValue!);
+                          },
+                          items: <String>['Cozinha', 'Sala', 'Quarto']
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                        const SizedBox(height: 16),
+                        const Text("Selecione os membros"),
+                        const SizedBox(height: 8),
+                        Column(
+                          children: _members.map((member) {
+                            return CheckboxListTile(
+                              title: Text(member.name),
+                              value: taskViewModel.selectedMembers
+                                  .contains(member),
+                              onChanged: (bool? value) {
+                                if (value == true) {
+                                  taskViewModel.updateMembers(
+                                    [...taskViewModel.selectedMembers, member],
+                                  );
+                                } else {
+                                  taskViewModel.updateMembers(
+                                    taskViewModel.selectedMembers
+                                        .where((m) => m != member)
+                                        .toList(),
+                                  );
+                                }
+                              },
+                            );
+                          }).toList(),
+                        ),
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: () {
+                            if (_titleController.text.isNotEmpty &&
+                                _descriptionController.text.isNotEmpty) {
+                              final newTask = Task(
+                                id: DateTime.now().millisecondsSinceEpoch,
+                                title: _titleController.text,
+                                description: _descriptionController.text,
+                                type: _typeController.text,
+                                group: taskViewModel.selectedGroup,
+                                category: taskViewModel.selectedCategory,
+                                members: taskViewModel.selectedMembers,
+                              );
 
-                CnTextWidget(
-                    text: 'Comece adicionando a sua primeira tarefa',
-                    textStyle: themeTextStyle.textTMedium),
-
-                ElevatedButton(
-                  onPressed: () => showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    builder: (_) =>
-                        AddTaskBottomSheet(viewModel: widget.taskViewModel),
+                              taskViewModel.addTask(newTask);
+                              Navigator.pop(context);
+                            }
+                          },
+                          child: const Text("Adicionar Tarefa"),
+                        ),
+                      ],
+                    ),
                   ),
-                  child: const Text("Adicionar Tarefa"),
-                ),
-              ],
+                );
+              },
             ),
-          ),
+          // Se existirem tarefas, elas são exibidas
+          if (taskViewModel.tasks.isNotEmpty)
+            Expanded(
+              child: ListView.builder(
+                itemCount: taskViewModel.tasks.length,
+                itemBuilder: (context, index) {
+                  final task = taskViewModel.tasks[index];
+                  return Card(
+                    margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.all(16),
+                      title: Text(
+                        task.title,
+                      ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Descrição: ${task.description}'),
+                          const SizedBox(height: 8),
+                          Text('Categoria: ${task.category}'),
+                          const SizedBox(height: 8),
+                          Text('Grupo: ${task.group}'),
+                          const SizedBox(height: 8),
+                          Text(
+                              'Membros: ${task.members.map((e) => e.name).join(', ')}'),
+                        ],
+                      ),
+                      trailing: const Icon(Icons.check_circle_outline),
+                    ),
+                  );
+                },
+              ),
+            ),
         ],
       ),
     );
