@@ -6,6 +6,7 @@ import 'package:clean_nest/modules/auth/src/ui/widgets/pagination_container_widg
 import 'package:clean_nest/shared/widgets/buttons/cn_primary_button_widget.dart';
 import 'package:clean_nest/shared/widgets/texts/cn_text_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class SetupProfilePage extends StatelessWidget {
   final SetupProfileViewModel setupProfileViewModel;
@@ -14,9 +15,6 @@ class SetupProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Carrega os mascotes ao acessar a página
-    setupProfileViewModel.loadMascots();
-
     final theme = Theme.of(context);
     final themeTextStyle = theme.extension<CnTextStyles>();
     final themeSpacing = theme.extension<CnSpacing>();
@@ -37,11 +35,20 @@ class SetupProfilePage extends StatelessWidget {
               child: ListView.separated(
                 separatorBuilder: (context, index) =>
                     SizedBox(width: themeSpacing.spacing12px),
-                itemCount: 3,
+                itemCount: 2,
                 scrollDirection: Axis.horizontal,
                 shrinkWrap: true,
-                itemBuilder: (context, index) =>
-                    PaginationContainerWidget(index: index + 1),
+                itemBuilder: (context, index) {
+                  return ValueListenableBuilder<int>(
+                    valueListenable: setupProfileViewModel.pageIndexNotifier,
+                    builder: (context, currentPageIndex, child) {
+                      return PaginationContainerWidget(
+                        index: index + 1,
+                        isSelected: currentPageIndex == index,
+                      );
+                    },
+                  );
+                },
               ),
             ),
             SizedBox(
@@ -53,13 +60,17 @@ class SetupProfilePage extends StatelessWidget {
                   _buildCreateRotineGroupPage(setupProfileViewModel,
                       themeSpacing, themeTextStyle!, size),
                 ],
+                onPageChanged: (index) {
+                  setupProfileViewModel
+                      .setPageIndex(index); // Atualiza o índice
+                },
               ),
             ),
             SizedBox(height: themeSpacing.spacing24px),
             CnPrimaryButtonWidget(
               title: 'Continuar',
               onPressed: () {
-                // Lógica de ação do botão
+                Modular.to.pushNamed('/home/');
               },
               height: 70,
             ),
@@ -75,46 +86,60 @@ Widget _buildChooseMascotPage(
   CnSpacing themeSpacing,
   Size size,
 ) {
-  return Column(
-    children: [
-      SizedBox(height: themeSpacing.spacing32px),
-      const CnTextWidget(text: 'Escolha o seu mascote'),
-      SizedBox(height: themeSpacing.spacing24px),
-      Wrap(
-        spacing: 16,
-        runSpacing: 16,
-        children: List.generate(setupProfileViewModel.mascots.length, (index) {
-          final mascot = setupProfileViewModel.mascots[index];
-          return GestureDetector(
-            onTap: () {
-              setupProfileViewModel.selectMascot(mascot);
-            },
-            child: Column(
-              children: [
-                Container(
-                  width: size.width * 0.2,
-                  height: size.width * 0.2,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: mascot.id ==
-                            setupProfileViewModel.selectedMascot?.id
-                        ? Border.all(color: cnColorScheme.primary, width: 2.5)
-                        : null,
+  // Obtém o ViewModel a partir do Modular
+  // final setupProfileViewModel = Modular.get<SetupProfileViewModel>();
+
+  return AnimatedBuilder(
+    animation: setupProfileViewModel,
+    builder: (context, _) {
+      return Column(
+        children: [
+          SizedBox(height: themeSpacing.spacing32px),
+          const CnTextWidget(text: 'Escolha o seu mascote'),
+          SizedBox(height: themeSpacing.spacing24px),
+          Wrap(
+            spacing: 16,
+            runSpacing: 16,
+            children: List.generate(
+              setupProfileViewModel.mascots.length,
+              (index) {
+                final mascot = setupProfileViewModel.mascots[index];
+                return GestureDetector(
+                  onTap: () {
+                    setupProfileViewModel.selectMascot(mascot);
+                  },
+                  child: Column(
+                    children: [
+                      Container(
+                        width: size.width * 0.2,
+                        height: size.width * 0.2,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: mascot.id ==
+                                  setupProfileViewModel.selectedMascot?.id
+                              ? Border.all(
+                                  color: cnColorScheme.primary,
+                                  width: 2.5,
+                                )
+                              : null,
+                        ),
+                        child: ClipOval(
+                          child: Image.asset(
+                            mascot.imageUrl,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      Text(mascot.name),
+                    ],
                   ),
-                  child: ClipOval(
-                    child: Image.asset(
-                      mascot.imageUrl, // A URL da imagem é o caminho do asset
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                Text(mascot.name),
-              ],
+                );
+              },
             ),
-          );
-        }),
-      ),
-    ],
+          ),
+        ],
+      );
+    },
   );
 }
 

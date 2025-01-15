@@ -4,20 +4,39 @@ import 'package:flutter/material.dart';
 
 class PaginationContainerWidget extends StatelessWidget {
   final int index;
-  const PaginationContainerWidget({super.key, required this.index});
+  final bool isSelected;
+
+  const PaginationContainerWidget({
+    super.key,
+    required this.index,
+    this.isSelected = false,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
       height: 50,
       width: 50,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: cnColorScheme.primary,
+        color: isSelected ? cnColorScheme.primary : cnColorScheme.onSecondary,
+        border: isSelected
+            ? null
+            : Border.all(
+                color: cnColorScheme.primary,
+                width: 1.5,
+              ),
       ),
       child: Center(
         child: CnTextWidget(
           text: index.toString(),
+          textStyle: TextStyle(
+            color: isSelected ? Colors.white : cnColorScheme.primary,
+            fontWeight: FontWeight.bold,
+            fontSize: isSelected ? 18 : 16,
+          ),
         ),
       ),
     );
