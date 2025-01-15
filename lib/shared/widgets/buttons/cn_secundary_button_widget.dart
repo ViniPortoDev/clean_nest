@@ -1,7 +1,7 @@
 import 'package:clean_nest/core/themes/themes.dart';
 import 'package:flutter/material.dart';
 
-class CnPrimaryButtonWidget extends StatelessWidget {
+class CnSecundaryButtonWidget extends StatelessWidget {
   final String title;
   final IconData? prefixIcon;
   final IconData? suffixIcon;
@@ -13,7 +13,7 @@ class CnPrimaryButtonWidget extends StatelessWidget {
   final Color? disabledColor; // Cor do botão desabilitado
   final Color? textColor; // Cor do texto
 
-  const CnPrimaryButtonWidget({
+  const CnSecundaryButtonWidget({
     super.key,
     required this.title,
     this.prefixIcon,
@@ -37,7 +37,7 @@ class CnPrimaryButtonWidget extends StatelessWidget {
         style: ButtonStyle(
           backgroundColor: WidgetStateProperty.resolveWith<Color>(
             (states) => isEnabled
-                ? (enabledColor ?? Theme.of(context).primaryColor)
+                ? (enabledColor ?? cnColorScheme.tertiary)
                 : (disabledColor ?? Theme.of(context).disabledColor),
           ),
           padding: WidgetStateProperty.all<EdgeInsets>(
@@ -58,7 +58,7 @@ class CnPrimaryButtonWidget extends StatelessWidget {
                 prefixIcon,
                 size: 20,
                 color: isEnabled
-                    ? (textColor ?? Colors.white)
+                    ? (textColor ?? cnColorScheme.primary)
                     : (disabledColor ?? cnColorScheme.cnGrey),
               ),
             if (prefixIcon != null) const SizedBox(width: 8),
@@ -66,7 +66,7 @@ class CnPrimaryButtonWidget extends StatelessWidget {
               title,
               style: TextStyle(
                 color: isEnabled
-                    ? (textColor ?? Colors.white)
+                    ? (textColor ?? cnColorScheme.primary)
                     : (disabledColor ?? cnColorScheme.cnGrey),
                 fontWeight: FontWeight.bold,
               ),
@@ -77,7 +77,7 @@ class CnPrimaryButtonWidget extends StatelessWidget {
                 suffixIcon,
                 size: 20,
                 color: isEnabled
-                    ? (textColor ?? Colors.white)
+                    ? (textColor ?? cnColorScheme.primary)
                     : (disabledColor ?? cnColorScheme.cnGrey),
               ),
           ],

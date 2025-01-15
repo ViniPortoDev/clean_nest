@@ -1,4 +1,8 @@
+import 'package:clean_nest/core/themes/theme_spacings.dart';
+import 'package:clean_nest/core/themes/theme_text_styles.dart';
 import 'package:clean_nest/modules/onboarding/ui/viewmodels/onboarding_viewmodel.dart';
+import 'package:clean_nest/shared/widgets/buttons/cn_primary_button_widget.dart';
+import 'package:clean_nest/shared/widgets/buttons/cn_secundary_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -9,13 +13,11 @@ class OnboardingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final themeTextStyle = theme.extension<CnTextStyles>();
+    final themeSpacing = theme.extension<CnSpacing>();
     return IntroductionScreen(
       pages: [
-        _buildPageModel(
-          title: 'Organize suas tarefas',
-          body: 'Distribua as tarefas de forma justa e intuitiva.',
-          imagePath: 'assets/images/news.png',
-        ),
         _buildPageModel(
           title: 'Crie grupos facilmente',
           body: 'Gerencie as tarefas de um grupo com praticidade.',
@@ -25,6 +27,32 @@ class OnboardingPage extends StatelessWidget {
           title: 'Evite conflitos',
           body: 'Deixe o app dividir as tarefas de forma divertida.',
           imagePath: 'assets/images/repeat.png',
+        ),
+        _buildPageModel(
+          title: 'Organize suas tarefas',
+          // body: 'Distribua as tarefas de forma justa e intuitiva.',
+          bodyWidget: Column(
+            children: [
+              const Text('Faça login ou crie sua conta'),
+              SizedBox(height: themeSpacing!.spacing32px),
+              CnPrimaryButtonWidget(
+                title: 'Criar conta',
+                onPressed: () {
+                  Modular.to.pushNamed('/auth/sign_up');
+                },
+                height: 70,
+              ),
+              SizedBox(height: themeSpacing.spacing24px),
+              CnSecundaryButtonWidget(
+                title: 'Login',
+                onPressed: () {
+                  Modular.to.pushNamed('/auth/');
+                },
+                height: 70,
+              ),
+            ],
+          ),
+          imagePath: 'assets/images/news.png',
         ),
       ],
       onDone: () async => await onboardingViewModel.completeOnboarding(),
@@ -39,7 +67,7 @@ class OnboardingPage extends StatelessWidget {
       dotsDecorator: DotsDecorator(
         size: const Size.square(10.0),
         activeSize: const Size(20.0, 10.0),
-        activeColor: Theme.of(context).colorScheme.secondary,
+        activeColor: Theme.of(context).colorScheme.primary,
         color: Colors.black26,
         spacing: const EdgeInsets.symmetric(horizontal: 3.0),
         activeShape:
@@ -50,18 +78,16 @@ class OnboardingPage extends StatelessWidget {
 
   PageViewModel _buildPageModel({
     required String title,
-    required String body,
+    String? body,
+    Widget? bodyWidget,
     required String imagePath,
   }) {
     return PageViewModel(
+      decoration: const PageDecoration(bodyPadding: EdgeInsets.all(16)),
       title: title,
       body: body,
-      image: Center(child: Image.asset(imagePath, height: 200)),
-      decoration: const PageDecoration(
-        titleTextStyle: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-        bodyTextStyle: TextStyle(fontSize: 16),
-        contentMargin: EdgeInsets.all(16),
-      ),
+      bodyWidget: bodyWidget,
+      image: Image.asset(imagePath, height: 200),
     );
   }
 }

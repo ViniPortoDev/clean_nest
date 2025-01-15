@@ -10,6 +10,7 @@ class _CnThemeColors {
   static const Color cnDarkBlue = Color(0xff123382);
   static const Color cnLightBlue = Color(0xffCFDAF0);
   static const Color cnPurple = Color(0xff6734f0);
+  static const Color cnLightPurple = Color(0xfff8f0fe);
   static const Color cnDarkPurple = Color(0xff32185E);
   static const Color cnPink = Color(0xffF660A3);
   static const Color cnRed = Color(0xffFF3C3C);
@@ -17,8 +18,8 @@ class _CnThemeColors {
   static const Color cnLightRed = Color.fromARGB(255, 244, 147, 163);
   static const Color cnBlack = Color(0xff1F1F1F);
   static const Color cnDarkGrey = Color(0xff666666);
-  static const Color cnGrey = Color(0xff555557);
-  static const Color cnLightGrey = Color.fromARGB(255, 240, 240, 240);
+  static const Color cnGrey = Color(0xffababab);
+  static const Color cnLightGrey = Color(0xffe5e5e5);
   static const Color cnWhite = Color(0xffFDFDFD);
   static const Color cnErro = Color(0xffCC1100);
   static const Color cnSuccess = Color(0xff9BD900);
@@ -52,9 +53,12 @@ class _CnColorScheme extends ColorScheme {
 
   const _CnColorScheme({
     super.brightness = Brightness.light,
-    super.primary = _CnThemeColors.cnPurple,
+    //TODO reverter
+    // super.primary = _CnThemeColors.cnPurple,
+    super.primary = const Color(0xffc40000),
     super.onPrimary = _CnThemeColors.cnWhite,
     super.secondary = _CnThemeColors.cnBlack,
+    super.tertiary = _CnThemeColors.cnLightPurple,
     super.onSecondary = _CnThemeColors.cnWhite,
     super.error = _CnThemeColors.cnErro,
     super.onError = _CnThemeColors.cnWhite,

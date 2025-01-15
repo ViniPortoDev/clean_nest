@@ -2,10 +2,12 @@ import 'package:clean_nest/core/themes/theme_spacings.dart';
 import 'package:clean_nest/core/themes/theme_text_styles.dart';
 import 'package:clean_nest/core/themes/themes.dart';
 import 'package:clean_nest/shared/widgets/buttons/cn_primary_button_widget.dart';
+import 'package:clean_nest/shared/widgets/buttons/cn_secundary_button_widget.dart';
 import 'package:clean_nest/shared/widgets/cn_appbar_widget.dart';
 import 'package:clean_nest/shared/widgets/cn_scaffold_widget.dart';
 import 'package:clean_nest/shared/widgets/inputs/cn_primary_input_widget.dart';
 import 'package:clean_nest/shared/widgets/texts/cn_text_widget.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -37,23 +39,52 @@ class SignInPage extends StatelessWidget {
           ),
           SizedBox(height: themeSpacing.spacing24px),
           CnPrimaryButtonWidget(
-            title: 'Sign In',
-            onPressed: () {},
+            title: 'Entrar',
+            onPressed: () {
+              Modular.to.pushNamedAndRemoveUntil('/home/', (route) => false);
+            },
             height: 70,
           ),
           SizedBox(height: themeSpacing.spacing16px),
           const CnTextWidget(text: 'Ou'),
           SizedBox(height: themeSpacing.spacing16px),
-          CnPrimaryButtonWidget(
+          CnSecundaryButtonWidget(
             title: 'Login com Google',
             onPressed: () {
-              Modular.to.pushNamed('sign_up');
+              // Modular.to.pushNamed('sign_up');
             },
             height: 70,
           ),
-       
+          SizedBox(height: themeSpacing.spacing16px),
+          _buildCreateAccountSuggestionWidget(
+              context: context,
+              onLoginTap: () => Modular.to.pushNamed('sign_up'))
         ],
       ),
     );
   }
+}
+
+Widget _buildCreateAccountSuggestionWidget({
+  required BuildContext context,
+  required VoidCallback onLoginTap,
+}) {
+  return Center(
+    child: RichText(
+      text: TextSpan(
+        text: "Não possui uma conta? ",
+        style: TextStyle(fontSize: 14.0, color: cnColorScheme.cnGrey),
+        children: [
+          TextSpan(
+            text: "Crie uma agora",
+            style: TextStyle(
+              color: Theme.of(context).primaryColor,
+              fontWeight: FontWeight.bold,
+            ),
+            recognizer: TapGestureRecognizer()..onTap = onLoginTap,
+          ),
+        ],
+      ),
+    ),
+  );
 }
