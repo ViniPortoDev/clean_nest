@@ -21,6 +21,7 @@ class CnThemes {
             color: cnColorScheme.cnBlack, //change your color here
           ),
         ),
+        disabledColor: cnColorScheme.cnLightGrey,
         elevatedButtonTheme: elevatedButtonTheme,
         scaffoldBackgroundColor: cnColorScheme.background,
         bottomSheetTheme: BottomSheetThemeData(
