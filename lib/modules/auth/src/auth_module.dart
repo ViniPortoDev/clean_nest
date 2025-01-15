@@ -17,7 +17,7 @@ class AuthModule extends Module {
 
   @override
   void routes(r) {
-    r.child('/create_rotine_group', child: (context) => const SignInPage());
+    r.child('/', child: (context) => const SignInPage());
     r.child('/sign_up', child: (context) => const SignUpPage());
     r.child(
       '/choose_mascot',
@@ -25,6 +25,7 @@ class AuthModule extends Module {
         chooseMascotViewModel: context.read()..loadMascots(),
       ),
     );
-    r.child('/', child: (context) => const CreateRotineGroupPage());
+    r.child('/create_rotine_group',
+        child: (context) => const CreateRotineGroupPage());
   }
 }
