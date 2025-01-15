@@ -17,7 +17,8 @@ class SplashViewModel extends BaseViewModel {
     bool isFirstLaunch = sharedPrefsRepo.getBool('isFirstLaunch');
     setLoading(false);
 
-    if (isFirstLaunch) {
+    //TODO tirar a "!" do isFirstLaunch
+    if (!isFirstLaunch) {
       Modular.to.pushNamed('/onboarding/');
     } else {
       Modular.to.pushNamed('/home/');
