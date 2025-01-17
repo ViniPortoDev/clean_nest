@@ -1,3 +1,5 @@
+import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
+import 'package:clean_nest/core/themes/themes.dart';
 import 'package:clean_nest/modules/home/src/domain/entities/task.dart';
 import 'package:clean_nest/modules/home/src/ui/viewmodels/task_viewmodel.dart';
 import 'package:clean_nest/modules/home/src/ui/widgets/add_task_container_widget.dart';
@@ -6,16 +8,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:clean_nest/core/domain/entities/member.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   final TaskViewModel taskViewModel;
   const HomePage({super.key, required this.taskViewModel});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final TextEditingController _titleController = TextEditingController();
     final TextEditingController _descriptionController =
         TextEditingController();
     final TextEditingController _typeController = TextEditingController();
+    int _currentIndex = 0;
+
+    // Lista de ícones para o menu
+    final iconList = <IconData>[
+      Icons.home,
+      Icons.star,
+      Icons.settings,
+      Icons.person,
+    ];
 
     final List<Member> _members = [
       Member(id: 1, name: 'Membro 1', email: '', tasks: []),
@@ -26,7 +42,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: SelectedGroupWidget(
-          groupName: taskViewModel.selectedGroup,
+          groupName: widget.taskViewModel.selectedGroup,
           onTap: () {
             showModalBottomSheet(
               context: context,
@@ -49,7 +65,7 @@ class HomePage extends StatelessWidget {
           const Text('Olá Vinicius Porto'),
           const SizedBox(height: 16),
           // Mostrar o container de adicionar tarefa apenas se não houver tarefas
-          if (taskViewModel.tasks.isEmpty)
+          if (widget.taskViewModel.tasks.isEmpty)
             AddTaskContainerWidget(
               onTap: () {
                 showModalBottomSheet(
@@ -86,9 +102,9 @@ class HomePage extends StatelessWidget {
                         ),
                         const SizedBox(height: 16),
                         DropdownButton<String>(
-                          value: taskViewModel.selectedGroup,
+                          value: widget.taskViewModel.selectedGroup,
                           onChanged: (String? newValue) {
-                            taskViewModel.updateGroup(newValue!);
+                            widget.taskViewModel.updateGroup(newValue!);
                           },
                           items: <String>['Familia Porto']
                               .map<DropdownMenuItem<String>>((String value) {
@@ -100,9 +116,9 @@ class HomePage extends StatelessWidget {
                         ),
                         const SizedBox(height: 16),
                         DropdownButton<String>(
-                          value: taskViewModel.selectedCategory,
+                          value: widget.taskViewModel.selectedCategory,
                           onChanged: (String? newValue) {
-                            taskViewModel.updateCategory(newValue!);
+                            widget.taskViewModel.updateCategory(newValue!);
                           },
                           items: <String>['Cozinha', 'Sala', 'Quarto']
                               .map<DropdownMenuItem<String>>((String value) {
@@ -119,16 +135,19 @@ class HomePage extends StatelessWidget {
                           children: _members.map((member) {
                             return CheckboxListTile(
                               title: Text(member.name),
-                              value: taskViewModel.selectedMembers
+                              value: widget.taskViewModel.selectedMembers
                                   .contains(member),
                               onChanged: (bool? value) {
                                 if (value == true) {
-                                  taskViewModel.updateMembers(
-                                    [...taskViewModel.selectedMembers, member],
+                                  widget.taskViewModel.updateMembers(
+                                    [
+                                      ...widget.taskViewModel.selectedMembers,
+                                      member
+                                    ],
                                   );
                                 } else {
-                                  taskViewModel.updateMembers(
-                                    taskViewModel.selectedMembers
+                                  widget.taskViewModel.updateMembers(
+                                    widget.taskViewModel.selectedMembers
                                         .where((m) => m != member)
                                         .toList(),
                                   );
@@ -147,12 +166,12 @@ class HomePage extends StatelessWidget {
                                 title: _titleController.text,
                                 description: _descriptionController.text,
                                 type: _typeController.text,
-                                group: taskViewModel.selectedGroup,
-                                category: taskViewModel.selectedCategory,
-                                members: taskViewModel.selectedMembers,
+                                group: widget.taskViewModel.selectedGroup,
+                                category: widget.taskViewModel.selectedCategory,
+                                members: widget.taskViewModel.selectedMembers,
                               );
 
-                              taskViewModel.addTask(newTask);
+                              widget.taskViewModel.addTask(newTask);
                               Navigator.pop(context);
                             }
                           },
@@ -165,14 +184,15 @@ class HomePage extends StatelessWidget {
               },
             ),
           // Se existirem tarefas, elas são exibidas
-          if (taskViewModel.tasks.isNotEmpty)
+          if (widget.taskViewModel.tasks.isNotEmpty)
             Expanded(
               child: ListView.builder(
-                itemCount: taskViewModel.tasks.length,
+                itemCount: widget.taskViewModel.tasks.length,
                 itemBuilder: (context, index) {
-                  final task = taskViewModel.tasks[index];
+                  final task = widget.taskViewModel.tasks[index];
                   return Card(
-                    margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    margin:
+                        const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                     elevation: 4,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -202,6 +222,110 @@ class HomePage extends StatelessWidget {
               ),
             ),
         ],
+      ),
+      floatingActionButton: GestureDetector(
+        onTap: () {
+          // Lógica ao clicar no botão
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              backgroundColor: Colors.white,
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.add_circle_outline,
+                      color: Colors.blueAccent, size: 32),
+                  SizedBox(width: 8),
+                  Text(
+                    'Adicionar',
+                    style: TextStyle(
+                      color: Colors.black87,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+              content: Text(
+                'Deseja adicionar este item?',
+                style: TextStyle(
+                  color: Colors.grey[700],
+                  fontSize: 16,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              actionsAlignment: MainAxisAlignment.center,
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(
+                    'Cancelar',
+                    style: TextStyle(color: Colors.redAccent),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    // Lógica para adicionar o item
+                  },
+                  child: Text(
+                    'Adicionar',
+                    style: TextStyle(color: Colors.blueAccent),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+        child: Container(
+          height: 65,
+          width: 65,
+          decoration: BoxDecoration(
+            color: cnColorScheme.primary,
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                spreadRadius: 4,
+                blurRadius: 8,
+              ),
+            ],
+          ),
+          child: Icon(
+            Icons.add,
+            color: Colors.white,
+            size: 36,
+          ),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: AnimatedBottomNavigationBar(
+        icons: [
+          Icons.home_rounded,
+          Icons.explore_rounded,
+          Icons.leaderboard_rounded,
+          Icons.person_rounded,
+        ],
+        activeIndex: _currentIndex,
+        gapLocation: GapLocation.center,
+        notchSmoothness: NotchSmoothness.verySmoothEdge,
+        leftCornerRadius: 20,
+        rightCornerRadius: 20,
+        backgroundColor: Colors.white,
+        activeColor: Colors.blueAccent,
+        inactiveColor: Colors.grey[400],
+        iconSize: 28,
+        elevation: 8,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        splashColor: Colors.blueAccent.withOpacity(0.2),
+        splashSpeedInMilliseconds: 250,
       ),
     );
   }
