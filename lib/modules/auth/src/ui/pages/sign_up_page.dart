@@ -1,6 +1,7 @@
 import 'package:clean_nest/core/themes/theme_spacings.dart';
 import 'package:clean_nest/core/themes/theme_text_styles.dart';
 import 'package:clean_nest/core/themes/themes.dart';
+import 'package:clean_nest/modules/auth/src/ui/viewmodels/auth_viewmodel.dart';
 import 'package:clean_nest/shared/widgets/buttons/cn_primary_button_widget.dart';
 import 'package:clean_nest/shared/widgets/cn_appbar_widget.dart';
 import 'package:clean_nest/shared/widgets/cn_scaffold_widget.dart';
@@ -11,7 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class SignUpPage extends StatelessWidget {
-  const SignUpPage({super.key});
+  final AuthViewmodel authViewmodel;
+  const SignUpPage({super.key, required this.authViewmodel});
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +58,8 @@ class SignUpPage extends StatelessWidget {
           SizedBox(height: themeSpacing.spacing24px),
           CnPrimaryButtonWidget(
             title: 'Continuar',
-            onPressed: () {
+            onPressed: () async {
+              await authViewmodel.getUser();
               Modular.to.pushNamed('setup_profile');
             },
             height: 70,

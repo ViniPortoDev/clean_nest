@@ -2,6 +2,7 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:clean_nest/core/themes/theme_spacings.dart';
 import 'package:clean_nest/core/themes/theme_text_styles.dart';
 import 'package:clean_nest/core/themes/themes.dart';
+import 'package:clean_nest/modules/home/src/ui/viewmodels/home_viewmodel.dart';
 import 'package:clean_nest/modules/home/src/ui/viewmodels/task_viewmodel.dart';
 import 'package:clean_nest/modules/home/src/ui/widgets/add_tasks_bottom_sheet_widget.dart';
 import 'package:clean_nest/modules/home/src/ui/widgets/select_group_widget.dart';
@@ -13,13 +14,24 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 class HomePage extends StatefulWidget {
   final TaskViewModel taskViewModel;
-  const HomePage({super.key, required this.taskViewModel});
+  final HomeViewmodel homeViewmodel;
+  const HomePage({
+    super.key,
+    required this.taskViewModel,
+    required this.homeViewmodel,
+  });
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    widget.homeViewmodel.getUser();
+  }
+
   int _selectedIndex = 1;
 
   @override
@@ -35,7 +47,7 @@ class _HomePageState extends State<HomePage> {
       Container(),
     ];
     return CnScaffoldWidget(
-      backgroundColor: Color.fromARGB(255, 247, 247, 247),
+      backgroundColor: const Color.fromARGB(255, 247, 247, 247),
       bottomNavigationBar: AnimatedBottomNavigationBar(
         icons: listIcon,
         activeIndex: _selectedIndex,
@@ -57,16 +69,17 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         centerTitle: true,
         title: SelectedGroupWidget(
-          groupName: "Familia Porto", // Nome do grupo selecionado.
+          groupName: widget.homeViewmodel.user?.groups[0].name ??
+              'bug', // Nome do grupo selecionado.
           onTap: () {
             showModalBottomSheet(
               context: context,
               builder: (context) => Container(
                 padding: const EdgeInsets.all(16),
                 height: 300,
-                child: Column(
+                child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text("Opções de Grupos", style: TextStyle(fontSize: 18)),
                     // Adicione widgets aqui
                   ],
@@ -81,7 +94,7 @@ class _HomePageState extends State<HomePage> {
           CnTextWidget(
               text: 'Olá Vinicius Porto',
               textStyle: themeTextStyle!.textLMedium),
-          CnTextWidget(text: 'Bem vindo ao Clean Nest'),
+          const CnTextWidget(text: 'Bem vindo ao Clean Nest'),
           SizedBox(height: themeSpacing!.spacing16px),
           Container(
             height: 160,
@@ -90,14 +103,14 @@ class _HomePageState extends State<HomePage> {
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: cnColorScheme.cnBlack),
             ),
-            child: Center(child: CnTextWidget(text: '3 Banners')),
+            child: const Center(child: CnTextWidget(text: '3 Banners')),
           ),
           SizedBox(height: themeSpacing.spacing32px),
           Container(
             height: 200,
             width: size.width,
             decoration: BoxDecoration(
-              color: Color.fromARGB(255, 211, 197, 248),
+              color: const Color.fromARGB(255, 211, 197, 248),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Column(
