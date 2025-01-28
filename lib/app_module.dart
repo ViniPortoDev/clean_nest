@@ -1,7 +1,4 @@
-import 'package:clean_nest/core/core_module.dart';
-import 'package:clean_nest/core/data/repositories/shared_preferences_repository_impl.dart';
-import 'package:clean_nest/core/data/repositories/user_repository_impl.dart';
-import 'package:clean_nest/core/domain/repositories/user_repository.dart';
+import 'package:clean_nest/core/data/services/local_storage/shared_preference/shared_preferences_service.dart';
 import 'package:clean_nest/modules/auth/src/auth_module.dart';
 import 'package:clean_nest/modules/home/home_module.dart';
 import 'package:clean_nest/modules/onboarding/onboarding_module.dart';
@@ -10,7 +7,9 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 class AppModule extends Module {
   @override
-  void binds(i) {}
+  void binds(i) {
+    i.addInstance(SharedPreferencesService()..init());
+  }
 
   @override
   void routes(r) {

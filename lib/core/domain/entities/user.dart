@@ -15,4 +15,6 @@ class User {
     required this.password,
     required this.groups,
   });
+
+  
 }

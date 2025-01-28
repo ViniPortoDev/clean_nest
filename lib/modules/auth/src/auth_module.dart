@@ -1,6 +1,4 @@
 import 'package:clean_nest/core/core_module.dart';
-import 'package:clean_nest/core/data/repositories/user_repository_impl.dart';
-import 'package:clean_nest/core/domain/repositories/user_repository.dart';
 import 'package:clean_nest/core/domain/usecases/create_group_usecase.dart';
 import 'package:clean_nest/modules/auth/src/data/repositories/group_repository_impl.dart';
 import 'package:clean_nest/modules/auth/src/domain/repositories/choose_mascot_repository.dart';

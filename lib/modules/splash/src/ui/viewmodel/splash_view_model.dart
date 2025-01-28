@@ -1,24 +1,24 @@
 // presentation/splash/splash_viewmodel.dart
-import 'package:clean_nest/core/data/repositories/shared_preferences_repository_impl.dart';
+import 'package:clean_nest/core/data/services/local_storage/shared_preference/shared_preferences_service.dart';
 import 'package:clean_nest/core/viewmodel/base_view_model.dart';
 import 'package:clean_nest/modules/splash/src/usecases/delay_splash_use_case.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class SplashViewModel extends BaseViewModel {
   final DelaySplashUseCase delaySplashUseCase;
-  final SharedPreferencesRepositoryImpl sharedPrefsRepo;
+  final SharedPreferencesService preferencesService;
 
   SplashViewModel(
-      {required this.delaySplashUseCase, required this.sharedPrefsRepo});
+      {required this.delaySplashUseCase, required this.preferencesService});
 
   void startSplash() async {
     setLoading(true);
     await delaySplashUseCase.execute();
-    bool isFirstLaunch = sharedPrefsRepo.getBool('isFirstLaunch');
+    bool? isFirstLaunch = preferencesService.getBool('isFirstLaunch');
     setLoading(false);
 
     //TODO tirar a "!" do isFirstLaunch
-    if (!isFirstLaunch) {
+    if (!isFirstLaunch!) {
       Modular.to.pushNamed('/onboarding/');
     } else {
       Modular.to.pushNamed('/home/');

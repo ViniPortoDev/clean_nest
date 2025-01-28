@@ -7,6 +7,7 @@ class UserFactory {
     required int id,
     required String name,
     required String email,
+    required String password,
     List<Group> groups = const [],
   }) {
     if (name.isEmpty) {
@@ -20,6 +21,7 @@ class UserFactory {
       id: id,
       name: name,
       email: email,
+      password: password,
       groups: groups,
     );
   }
