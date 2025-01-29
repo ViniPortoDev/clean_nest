@@ -1,10 +1,8 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
-import 'package:clean_nest/core/themes/theme_spacings.dart';
-import 'package:clean_nest/core/themes/theme_text_styles.dart';
 import 'package:clean_nest/core/themes/themes.dart';
 import 'package:clean_nest/modules/home/src/ui/viewmodels/home_viewmodel.dart';
 import 'package:clean_nest/modules/home/src/ui/viewmodels/task_viewmodel.dart';
-import 'package:clean_nest/modules/home/src/ui/widgets/add_tasks_bottom_sheet_widget.dart';
+import 'package:clean_nest/modules/home/src/ui/widgets/add_task_container_widget.dart';
 import 'package:clean_nest/modules/home/src/ui/widgets/select_group_widget.dart';
 import 'package:clean_nest/shared/widgets/cn_scaffold_widget.dart';
 import 'package:clean_nest/shared/widgets/texts/cn_text_widget.dart';
@@ -49,17 +47,15 @@ class _HomePageState extends State<HomePage> {
         height: 65,
         iconSize: 40,
 
-        inactiveColor: Colors.yellow,
-        // rightCornerRadius: 12,
-        // leftCornerRadius: 12,
-        splashColor: const Color(0xff424242),
-        // backgroundColor: const Color(0xff424242),
-        onTap: (index) => setState(() {
-          _selectedIndex = index;
-        }),
-      ),
+
+    final List<Member> _members = [
+      Member(id: 1, name: 'Membro 1', email: '', tasks: []),
+      Member(id: 2, name: 'Membro 2', email: '', tasks: []),
+      Member(id: 3, name: 'Membro 3', email: '', tasks: []),
+    ];
+
+    return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
         title: SelectedGroupWidget(
           groupName: widget.homeViewmodel.user?.groups[0].name ??
               'bug', // Nome do grupo selecionado.
@@ -73,7 +69,6 @@ class _HomePageState extends State<HomePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("Opções de Grupos", style: TextStyle(fontSize: 18)),
-                    // Adicione widgets aqui
                   ],
                 ),
               ),
@@ -105,39 +100,111 @@ class _HomePageState extends State<HomePage> {
               color: const Color.fromARGB(255, 211, 197, 248),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.add,
-                  size: 80,
-                  color: cnColorScheme.primary,
-                ),
-                // SizedBox(height: themeSpacing.spacing8px),
-                CnTextWidget(
-                  text: 'Adicione uma tarefa',
-                  textStyle: themeTextStyle.textMMedium!
-                      .copyWith(color: cnColorScheme.primary),
-                ),
-                SizedBox(height: themeSpacing.spacing4px),
-
-                CnTextWidget(
-                    text: 'Comece adicionando a sua primeira tarefa',
-                    textStyle: themeTextStyle.textTMedium),
-
-                ElevatedButton(
-                  onPressed: () => showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    builder: (_) =>
-                        AddTaskBottomSheet(viewModel: widget.taskViewModel),
+        ],
+      ),
+      floatingActionButton: GestureDetector(
+        onTap: () {
+          // Lógica ao clicar no botão
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              backgroundColor: Colors.white,
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.add_circle_outline,
+                      color: Colors.blueAccent, size: 32),
+                  SizedBox(width: 8),
+                  Text(
+                    'Adicionar',
+                    style: TextStyle(
+                      color: Colors.black87,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                  child: const Text("Adicionar Tarefa"),
+                ],
+              ),
+              content: Text(
+                'Deseja adicionar este item?',
+                style: TextStyle(
+                  color: Colors.grey[700],
+                  fontSize: 16,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              actionsAlignment: MainAxisAlignment.center,
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(
+                    'Cancelar',
+                    style: TextStyle(color: Colors.redAccent),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    // Lógica para adicionar o item
+                  },
+                  child: Text(
+                    'Adicionar',
+                    style: TextStyle(color: Colors.blueAccent),
+                  ),
                 ),
               ],
             ),
+          );
+        },
+        child: Container(
+          height: 65,
+          width: 65,
+          decoration: BoxDecoration(
+            color: cnColorScheme.primary,
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                spreadRadius: 4,
+                blurRadius: 8,
+              ),
+            ],
           ),
+          child: Icon(
+            Icons.add,
+            color: Colors.white,
+            size: 36,
+          ),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: AnimatedBottomNavigationBar(
+        icons: [
+          Icons.home_rounded,
+          Icons.explore_rounded,
+          Icons.leaderboard_rounded,
+          Icons.person_rounded,
         ],
+        activeIndex: _currentIndex,
+        gapLocation: GapLocation.center,
+        notchSmoothness: NotchSmoothness.verySmoothEdge,
+        leftCornerRadius: 20,
+        rightCornerRadius: 20,
+        backgroundColor: Colors.white,
+        activeColor: Colors.blueAccent,
+        inactiveColor: Colors.grey[400],
+        iconSize: 28,
+        elevation: 8,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        splashColor: Colors.blueAccent.withOpacity(0.2),
+        splashSpeedInMilliseconds: 250,
       ),
     );
   }
