@@ -1,4 +1,4 @@
-import 'package:clean_nest/modules/auth/src/domain/entities/mascot_entity.dart';
+import 'package:clean_nest/core/entities/mascot.dart';
 
 abstract class ChooseMascotRepository {
   List<Mascot> fetchMascots();

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:clean_nest/core/entities/mascot.dart';
 import 'package:clean_nest/core/services/local_storage/shared_preference/shared_preferences_service.dart';
 import 'package:clean_nest/modules/auth/src/data/models/user_model.dart';
 
@@ -13,11 +14,11 @@ class AuthLocalDatasourceImpl implements AuthLocalDatasource {
 
   AuthLocalDatasourceImpl(this.sharedPreferencesService);
 
-  final String _key = "USER_DATA";
+  final String _userKey = "USER_DATA";
 
   @override
   Future<UserModel?> getCurrentUser() async {
-    final userJson = sharedPreferencesService.getString(_key);
+    final userJson = sharedPreferencesService.getString(_userKey);
     if (userJson != null) {
       return UserModel.fromMap(jsonDecode(userJson));
     }
@@ -26,11 +27,13 @@ class AuthLocalDatasourceImpl implements AuthLocalDatasource {
 
   @override
   Future<void> saveUser(Map<String, dynamic> user) async {
-    await sharedPreferencesService.saveString(_key, jsonEncode(user));
+    await sharedPreferencesService.saveString(_userKey, jsonEncode(user));
   }
 
   @override
   Future<void> clearUser() async {
-    await sharedPreferencesService.remove(_key);
+    await sharedPreferencesService.remove(_userKey);
   }
+
+
 }

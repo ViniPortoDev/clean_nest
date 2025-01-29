@@ -123,8 +123,8 @@ Widget _buildChooseMascotPage(
               (index) {
                 final mascot = setupProfileViewModel.mascots[index];
                 return GestureDetector(
-                  onTap: () {
-                    setupProfileViewModel.selectMascot(mascot);
+                  onTap: () async {
+                    await setupProfileViewModel.selectMascot(mascot);
                   },
                   child: Column(
                     children: [

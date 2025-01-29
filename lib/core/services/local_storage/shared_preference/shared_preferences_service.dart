@@ -7,7 +7,6 @@ class SharedPreferencesService implements LocalStorage {
   // Inicializa o SharedPreferences
   Future<void> init() async {
     _prefs = await SharedPreferences.getInstance();
-    
   }
 
   @override
