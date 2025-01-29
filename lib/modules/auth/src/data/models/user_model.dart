@@ -25,11 +25,8 @@ class UserModel extends User {
       name: json['name'],
       email: json['email'],
       password: json['password'],
-      groups: List<Group>.from(
-        (json['groups'] as List<int>).map<Group>(
-          (x) => Group.fromMap(x as Map<String, dynamic>),
-        ),
-      ),
+      groups:
+          List<Group>.from(json['groups'].map((group) => Group.fromMap(group))),
     );
   }
 }

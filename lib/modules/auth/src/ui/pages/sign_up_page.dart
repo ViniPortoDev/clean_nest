@@ -16,6 +16,14 @@ class SignUpPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController nameController =
+        TextEditingController(text: 'Vinicius');
+    final TextEditingController emailController =
+        TextEditingController(text: 'vinicius.p.a.corin@gmail.com');
+    final TextEditingController passwordController =
+        TextEditingController(text: '123456');
+    final TextEditingController confirmPasswordController =
+        TextEditingController(text: '123456');
     final theme = Theme.of(context);
     theme.extension<CnTextStyles>();
     final themeSpacing = theme.extension<CnSpacing>();
@@ -38,16 +46,24 @@ class SignUpPage extends StatelessWidget {
             ),
           ),
           SizedBox(height: themeSpacing!.spacing40px),
-          const CnPrimaryTextInput(
+          CnPrimaryTextInput(
+            hintText: 'Nome',
+            controller: nameController,
+          ),
+          SizedBox(height: themeSpacing.spacing16px),
+          CnPrimaryTextInput(
             hintText: 'Email',
+            controller: emailController,
           ),
           SizedBox(height: themeSpacing.spacing16px),
-          const CnPrimaryTextInput(
+          CnPrimaryTextInput(
             hintText: 'Senha',
+            controller: passwordController,
           ),
           SizedBox(height: themeSpacing.spacing16px),
-          const CnPrimaryTextInput(
+          CnPrimaryTextInput(
             hintText: 'Confirme a senha',
+            controller: confirmPasswordController,
           ),
           SizedBox(height: themeSpacing.spacing24px),
           // const Padding(
@@ -58,6 +74,11 @@ class SignUpPage extends StatelessWidget {
           CnPrimaryButtonWidget(
             title: 'Continuar',
             onPressed: () async {
+              authViewmodel.createUser(
+                nameController.text,
+                emailController.text,
+                passwordController.text,
+              );
               Modular.to.pushNamed('setup_profile');
             },
             height: 70,

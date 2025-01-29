@@ -9,10 +9,21 @@ import 'package:clean_nest/shared/widgets/texts/cn_text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-class SetupProfilePage extends StatelessWidget {
+class SetupProfilePage extends StatefulWidget {
   final SetupProfileViewModel setupProfileViewModel;
 
   const SetupProfilePage({super.key, required this.setupProfileViewModel});
+
+  @override
+  State<SetupProfilePage> createState() => _SetupProfilePageState();
+}
+
+class _SetupProfilePageState extends State<SetupProfilePage> {
+  @override
+  void initState() {
+    super.initState();
+    widget.setupProfileViewModel.loadUser();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +52,8 @@ class SetupProfilePage extends StatelessWidget {
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   return ValueListenableBuilder<int>(
-                    valueListenable: setupProfileViewModel.pageIndexNotifier,
+                    valueListenable:
+                        widget.setupProfileViewModel.pageIndexNotifier,
                     builder: (context, currentPageIndex, child) {
                       return PaginationContainerWidget(
                         index: index + 1,
@@ -57,17 +69,17 @@ class SetupProfilePage extends StatelessWidget {
               child: PageView(
                 children: [
                   _buildChooseMascotPage(
-                      setupProfileViewModel, themeSpacing, size),
+                      widget.setupProfileViewModel, themeSpacing, size),
                   _buildCreateRotineGroupPage(
                     context,
-                    setupProfileViewModel,
+                    widget.setupProfileViewModel,
                     themeSpacing,
                     themeTextStyle!,
                     size,
                   ),
                 ],
                 onPageChanged: (index) {
-                  setupProfileViewModel
+                  widget.setupProfileViewModel
                       .setPageIndex(index); // Atualiza o índice
                 },
               ),

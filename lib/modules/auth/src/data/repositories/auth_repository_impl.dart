@@ -42,6 +42,21 @@ class AuthRepositoryImpl implements AuthRepository {
     await localDatasource.clearUser();
   }
 
+  @override
+  Future<User?> getCurrentUser() async {
+    final userModel = await localDatasource.getCurrentUser();
+    if (userModel != null) {
+      return User(
+        id: userModel.id,
+        name: userModel.name,
+        email: userModel.email,
+        password: userModel.password,
+        groups: userModel.groups,
+      );
+    }
+    return null;
+  }
+
   // @override
   // Future<User?> getLoggedUser() async {
   //   final userJson = await localDatasource.getUser();

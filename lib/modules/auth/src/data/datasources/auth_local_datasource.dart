@@ -19,7 +19,7 @@ class AuthLocalDatasourceImpl implements AuthLocalDatasource {
   Future<UserModel?> getCurrentUser() async {
     final userJson = sharedPreferencesService.getString(_key);
     if (userJson != null) {
-      return jsonDecode(userJson);
+      return UserModel.fromMap(jsonDecode(userJson));
     }
     return null;
   }
