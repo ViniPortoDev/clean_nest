@@ -1,7 +1,6 @@
 // presentation/splash/splash_page.dart
 import 'package:clean_nest/modules/splash/src/ui/viewmodel/splash_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 
 class SplashPage extends StatefulWidget {
   final SplashViewModel splashViewModel;

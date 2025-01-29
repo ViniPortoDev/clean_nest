@@ -9,7 +9,6 @@ class _CnThemeColors {
   static const Color cnCyanLight = Color(0xffDCF7FF);
   static const Color cnDarkBlue = Color(0xff123382);
   static const Color cnLightBlue = Color(0xffCFDAF0);
-  static const Color cnPurple = Color(0xff6734f0);
   static const Color cnLightPurple = Color(0xfff8f0fe);
   static const Color cnDarkPurple = Color(0xff32185E);
   static const Color cnPink = Color(0xffF660A3);

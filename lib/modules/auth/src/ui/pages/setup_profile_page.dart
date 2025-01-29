@@ -4,14 +4,26 @@ import 'package:clean_nest/core/themes/themes.dart';
 import 'package:clean_nest/modules/auth/src/ui/viewmodels/setup_profile_viewmodel.dart';
 import 'package:clean_nest/modules/auth/src/ui/widgets/pagination_container_widget.dart';
 import 'package:clean_nest/shared/widgets/buttons/cn_primary_button_widget.dart';
+import 'package:clean_nest/shared/widgets/inputs/cn_primary_input_widget.dart';
 import 'package:clean_nest/shared/widgets/texts/cn_text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-class SetupProfilePage extends StatelessWidget {
+class SetupProfilePage extends StatefulWidget {
   final SetupProfileViewModel setupProfileViewModel;
 
   const SetupProfilePage({super.key, required this.setupProfileViewModel});
+
+  @override
+  State<SetupProfilePage> createState() => _SetupProfilePageState();
+}
+
+class _SetupProfilePageState extends State<SetupProfilePage> {
+  @override
+  void initState() {
+    super.initState();
+    widget.setupProfileViewModel.loadUser();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +52,8 @@ class SetupProfilePage extends StatelessWidget {
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   return ValueListenableBuilder<int>(
-                    valueListenable: setupProfileViewModel.pageIndexNotifier,
+                    valueListenable:
+                        widget.setupProfileViewModel.pageIndexNotifier,
                     builder: (context, currentPageIndex, child) {
                       return PaginationContainerWidget(
                         index: index + 1,
@@ -56,12 +69,17 @@ class SetupProfilePage extends StatelessWidget {
               child: PageView(
                 children: [
                   _buildChooseMascotPage(
-                      setupProfileViewModel, themeSpacing, size),
-                  _buildCreateRotineGroupPage(setupProfileViewModel,
-                      themeSpacing, themeTextStyle!, size),
+                      widget.setupProfileViewModel, themeSpacing, size),
+                  _buildCreateRotineGroupPage(
+                    context,
+                    widget.setupProfileViewModel,
+                    themeSpacing,
+                    themeTextStyle!,
+                    size,
+                  ),
                 ],
                 onPageChanged: (index) {
-                  setupProfileViewModel
+                  widget.setupProfileViewModel
                       .setPageIndex(index); // Atualiza o índice
                 },
               ),
@@ -105,8 +123,8 @@ Widget _buildChooseMascotPage(
               (index) {
                 final mascot = setupProfileViewModel.mascots[index];
                 return GestureDetector(
-                  onTap: () {
-                    setupProfileViewModel.selectMascot(mascot);
+                  onTap: () async {
+                    await setupProfileViewModel.selectMascot(mascot);
                   },
                   child: Column(
                     children: [
@@ -144,6 +162,7 @@ Widget _buildChooseMascotPage(
 }
 
 Widget _buildCreateRotineGroupPage(
+  BuildContext context,
   SetupProfileViewModel setupProfileViewModel,
   CnSpacing themeSpacing,
   CnTextStyles themeTextStyle,
@@ -160,7 +179,6 @@ Widget _buildCreateRotineGroupPage(
             themeTextStyle.textMMedium!.copyWith(color: cnColorScheme.primary),
         textAlign: TextAlign.center,
       ),
-
       SizedBox(height: themeSpacing.spacing16px),
       Text(
         'Com o grupo, você poderá distribuir tarefas e se organizar melhor com amigos ou família. Tudo em um lugar fácil e divertido!',
@@ -170,28 +188,26 @@ Widget _buildCreateRotineGroupPage(
       SizedBox(height: themeSpacing.spacing24px),
 
       // Campo de texto para o nome do grupo
-      TextField(
-        decoration: InputDecoration(
-          labelText: 'Nome do Grupo',
-          labelStyle: themeTextStyle.textTRegular!.copyWith(
-            color: cnColorScheme.primary,
-          ),
-          border: OutlineInputBorder(),
-          contentPadding: EdgeInsets.all(12),
-        ),
-        style: themeTextStyle.headingM,
+      CnPrimaryTextInput(
+        hintText: 'Nome do Grupo',
+        controller: setupProfileViewModel.groupNameController,
       ),
       SizedBox(height: themeSpacing.spacing24px),
 
       // Botão para criar o grupo
       CnPrimaryButtonWidget(
-        width: 200,
-        title: 'Crie o grupo',
-        onPressed: () {},
+        title: 'Criar Grupo',
+        onPressed: () async {
+          await setupProfileViewModel.createGroup();
+          // ignore: use_build_context_synchronously
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Group created successfully!')),
+          );
+        },
+        height: 70,
       ),
-      SizedBox(height: themeSpacing.spacing16px),
 
-      // Texto informativo adicional
+      SizedBox(height: themeSpacing.spacing24px),
     ],
   );
 }

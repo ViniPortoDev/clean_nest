@@ -8,12 +8,12 @@ class CnDropdownWidget extends StatelessWidget {
       onChanged; // Callback para quando um item for selecionado
 
   const CnDropdownWidget({
-    Key? key,
+    super.key,
     required this.labelText,
     required this.items,
     required this.selectedValue,
     required this.onChanged,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

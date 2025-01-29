@@ -1,22 +1,31 @@
 import 'package:clean_nest/core/themes/theme_spacings.dart';
 import 'package:clean_nest/core/themes/theme_text_styles.dart';
 import 'package:clean_nest/core/themes/themes.dart';
+import 'package:clean_nest/modules/auth/src/ui/viewmodels/auth_viewmodel.dart';
 import 'package:clean_nest/shared/widgets/buttons/cn_primary_button_widget.dart';
 import 'package:clean_nest/shared/widgets/cn_appbar_widget.dart';
 import 'package:clean_nest/shared/widgets/cn_scaffold_widget.dart';
 import 'package:clean_nest/shared/widgets/inputs/cn_primary_input_widget.dart';
-import 'package:clean_nest/shared/widgets/texts/cn_text_widget.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class SignUpPage extends StatelessWidget {
-  const SignUpPage({super.key});
+  final AuthViewmodel authViewmodel;
+  const SignUpPage({super.key, required this.authViewmodel});
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController nameController =
+        TextEditingController(text: 'Vinicius');
+    final TextEditingController emailController =
+        TextEditingController(text: 'vinicius.p.a.corin@gmail.com');
+    final TextEditingController passwordController =
+        TextEditingController(text: '123456');
+    final TextEditingController confirmPasswordController =
+        TextEditingController(text: '123456');
     final theme = Theme.of(context);
-    final themeTextStyle = theme.extension<CnTextStyles>();
+    theme.extension<CnTextStyles>();
     final themeSpacing = theme.extension<CnSpacing>();
     final size = MediaQuery.of(context).size;
     return CnScaffoldWidget(
@@ -37,16 +46,24 @@ class SignUpPage extends StatelessWidget {
             ),
           ),
           SizedBox(height: themeSpacing!.spacing40px),
-          const CnPrimaryTextInput(
-            hintText: 'Email',
+          CnPrimaryTextInput(
+            hintText: 'Nome',
+            controller: nameController,
           ),
           SizedBox(height: themeSpacing.spacing16px),
-          const CnPrimaryTextInput(
-            hintText: 'Senha',
+          CnPrimaryTextInput(
+            hintText: 'Email',
+            controller: emailController,
           ),
-          SizedBox(height: themeSpacing!.spacing16px),
-          const CnPrimaryTextInput(
+          SizedBox(height: themeSpacing.spacing16px),
+          CnPrimaryTextInput(
+            hintText: 'Senha',
+            controller: passwordController,
+          ),
+          SizedBox(height: themeSpacing.spacing16px),
+          CnPrimaryTextInput(
             hintText: 'Confirme a senha',
+            controller: confirmPasswordController,
           ),
           SizedBox(height: themeSpacing.spacing24px),
           // const Padding(
@@ -56,7 +73,12 @@ class SignUpPage extends StatelessWidget {
           SizedBox(height: themeSpacing.spacing24px),
           CnPrimaryButtonWidget(
             title: 'Continuar',
-            onPressed: () {
+            onPressed: () async {
+              authViewmodel.createUser(
+                nameController.text,
+                emailController.text,
+                passwordController.text,
+              );
               Modular.to.pushNamed('setup_profile');
             },
             height: 70,

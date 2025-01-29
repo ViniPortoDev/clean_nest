@@ -1,9 +1,9 @@
-import 'package:clean_nest/core/data/repositories/shared_preferences_repository.dart';
+import 'package:clean_nest/core/services/local_storage/shared_preference/shared_preferences_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class OnboardingViewModel extends ChangeNotifier {
-  final SharedPreferencesRepository sharedPreferencesRepository;
+  final SharedPreferencesService sharedPreferencesRepository;
 
   OnboardingViewModel({required this.sharedPreferencesRepository});
   Future<void> completeOnboarding() async {

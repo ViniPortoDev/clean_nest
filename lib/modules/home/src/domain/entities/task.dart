@@ -17,5 +17,6 @@ class Task {
     required this.group,
     required this.category,
     required this.members,
+    
   });
 }
