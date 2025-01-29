@@ -1,4 +1,4 @@
-import 'package:clean_nest/core/domain/entities/user.dart';
+import 'package:clean_nest/core/entities/user.dart';
 import 'package:clean_nest/modules/auth/src/data/datasources/auth_remote_datasource.dart';
 import 'package:clean_nest/modules/auth/src/data/models/user_model.dart';
 import 'package:clean_nest/modules/auth/src/domain/repositories/auth_repository.dart';

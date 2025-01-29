@@ -17,9 +17,8 @@ class SignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final themeTextStyle = theme.extension<CnTextStyles>();
+    theme.extension<CnTextStyles>();
     final themeSpacing = theme.extension<CnSpacing>();
-    final size = MediaQuery.of(context).size;
     return CnScaffoldWidget(
       appBar: const CnAppBarWidget(title: 'Sign In', showBackButton: true),
       body: Column(

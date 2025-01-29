@@ -5,10 +5,10 @@ class SelectedGroupWidget extends StatelessWidget {
   final VoidCallback onTap; // Função para abrir o BottomSheet ou outra ação.
 
   const SelectedGroupWidget({
-    Key? key,
+    super.key,
     required this.groupName,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

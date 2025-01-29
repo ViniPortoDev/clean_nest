@@ -1,4 +1,4 @@
-import 'package:clean_nest/core/data/services/local_storage/shared_preference/shared_preferences_service.dart';
+import 'package:clean_nest/core/services/local_storage/shared_preference/shared_preferences_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 

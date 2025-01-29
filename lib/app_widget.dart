@@ -7,7 +7,6 @@ class AppWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Modular.setInitialRoute('/splash/');
     return MaterialApp.router(
       title: "Clean Nest",
       theme: CnThemes().lightTheme,

@@ -6,7 +6,6 @@ import 'package:clean_nest/shared/widgets/buttons/cn_primary_button_widget.dart'
 import 'package:clean_nest/shared/widgets/cn_appbar_widget.dart';
 import 'package:clean_nest/shared/widgets/cn_scaffold_widget.dart';
 import 'package:clean_nest/shared/widgets/inputs/cn_primary_input_widget.dart';
-import 'package:clean_nest/shared/widgets/texts/cn_text_widget.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -18,7 +17,7 @@ class SignUpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final themeTextStyle = theme.extension<CnTextStyles>();
+    theme.extension<CnTextStyles>();
     final themeSpacing = theme.extension<CnSpacing>();
     final size = MediaQuery.of(context).size;
     return CnScaffoldWidget(
@@ -46,7 +45,7 @@ class SignUpPage extends StatelessWidget {
           const CnPrimaryTextInput(
             hintText: 'Senha',
           ),
-          SizedBox(height: themeSpacing!.spacing16px),
+          SizedBox(height: themeSpacing.spacing16px),
           const CnPrimaryTextInput(
             hintText: 'Confirme a senha',
           ),
@@ -59,7 +58,6 @@ class SignUpPage extends StatelessWidget {
           CnPrimaryButtonWidget(
             title: 'Continuar',
             onPressed: () async {
-              await authViewmodel.getUser();
               Modular.to.pushNamed('setup_profile');
             },
             height: 70,

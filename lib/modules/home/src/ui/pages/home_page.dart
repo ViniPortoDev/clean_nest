@@ -6,11 +6,9 @@ import 'package:clean_nest/modules/home/src/ui/viewmodels/home_viewmodel.dart';
 import 'package:clean_nest/modules/home/src/ui/viewmodels/task_viewmodel.dart';
 import 'package:clean_nest/modules/home/src/ui/widgets/add_tasks_bottom_sheet_widget.dart';
 import 'package:clean_nest/modules/home/src/ui/widgets/select_group_widget.dart';
-import 'package:clean_nest/shared/widgets/cn_appbar_widget.dart';
 import 'package:clean_nest/shared/widgets/cn_scaffold_widget.dart';
 import 'package:clean_nest/shared/widgets/texts/cn_text_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 
 class HomePage extends StatefulWidget {
   final TaskViewModel taskViewModel;
@@ -29,7 +27,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    widget.homeViewmodel.getUser();
   }
 
   int _selectedIndex = 1;
@@ -41,11 +38,6 @@ class _HomePageState extends State<HomePage> {
     final themeSpacing = theme.extension<CnSpacing>();
     final size = MediaQuery.of(context).size;
     List<IconData> listIcon = [Icons.home, Icons.add, Icons.person];
-    final List<Widget> _pages = [
-      Container(),
-      Container(),
-      Container(),
-    ];
     return CnScaffoldWidget(
       backgroundColor: const Color.fromARGB(255, 247, 247, 247),
       bottomNavigationBar: AnimatedBottomNavigationBar(

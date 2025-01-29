@@ -1,5 +1,5 @@
-import 'package:clean_nest/core/domain/entities/group.dart';
-import 'package:clean_nest/core/domain/entities/user.dart';
+import 'package:clean_nest/core/entities/group.dart';
+import 'package:clean_nest/core/entities/user.dart';
 
 class UserModel extends User {
   UserModel({

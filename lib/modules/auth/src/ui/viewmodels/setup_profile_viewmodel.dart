@@ -1,7 +1,5 @@
 // lib/modules/auth/src/ui/viewmodels/choose_mascot_viewmodel.dart
-import 'package:clean_nest/core/domain/entities/group.dart';
-import 'package:clean_nest/core/domain/entities/user.dart';
-import 'package:clean_nest/core/domain/usecases/create_group_usecase.dart';
+import 'package:clean_nest/core/entities/user.dart';
 import 'package:clean_nest/core/viewmodel/base_view_model.dart';
 import 'package:clean_nest/modules/auth/src/domain/repositories/choose_mascot_repository.dart';
 import 'package:clean_nest/modules/auth/src/domain/entities/mascot_entity.dart';
@@ -9,9 +7,8 @@ import 'package:flutter/material.dart';
 
 class SetupProfileViewModel extends BaseViewModel {
   final ChooseMascotRepository chooseMascotrepository;
-  final CreateGroupUsecase createGroupUsecase;
 
-  SetupProfileViewModel(this.chooseMascotrepository, this.createGroupUsecase);
+  SetupProfileViewModel(this.chooseMascotrepository);
   Mascot? selectedMascot;
 
   List<Mascot> mascots = [];
@@ -31,12 +28,8 @@ class SetupProfileViewModel extends BaseViewModel {
     if (_user != null) {
       final groupName = groupNameController.text;
       if (groupName.isNotEmpty) {
-        final newGroup = Group(
-          id: DateTime.now().millisecondsSinceEpoch,
-          name: groupName,
-        );
 
-        await createGroupUsecase.call(_user!, newGroup);
+        // await createGroupUsecase.call(_user!, newGroup);
 
         notifyListeners();
       }

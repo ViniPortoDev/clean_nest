@@ -48,7 +48,6 @@ class AddTaskBottomSheet extends StatelessWidget {
                 ? () {
                     Navigator.pop(context); // Fecha o BottomSheet
                     // Lógica para adicionar tarefa
-                    print("Tarefa adicionada: ${viewModel.type}, ${viewModel.group}, ${viewModel.category}, ${viewModel.participants}");
                   }
                 : null,
             child: const Text("Adicionar Tarefa"),

@@ -1,4 +1,4 @@
-import 'package:clean_nest/core/data/services/local_storage/local_storage.dart';
+import 'package:clean_nest/core/services/local_storage/local_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesService implements LocalStorage {
@@ -7,6 +7,7 @@ class SharedPreferencesService implements LocalStorage {
   // Inicializa o SharedPreferences
   Future<void> init() async {
     _prefs = await SharedPreferences.getInstance();
+    
   }
 
   @override

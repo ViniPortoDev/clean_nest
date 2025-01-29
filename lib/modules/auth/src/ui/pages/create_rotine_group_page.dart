@@ -12,7 +12,6 @@ class CreateRotineGroupPage extends StatelessWidget {
     final theme = Theme.of(context);
     final themeTextStyle = theme.extension<CnTextStyles>();
     final themeSpacing = theme.extension<CnSpacing>();
-    final size = MediaQuery.of(context).size;
 
     return CnScaffoldWidget(
       appBar: const CnAppBarWidget(
@@ -21,7 +20,7 @@ class CreateRotineGroupPage extends StatelessWidget {
       ),
       body: Center(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24),
+          padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -53,8 +52,8 @@ class CreateRotineGroupPage extends StatelessWidget {
                   labelStyle: themeTextStyle.textTRegular!.copyWith(
                     color: theme.primaryColor,
                   ),
-                  border: OutlineInputBorder(),
-                  contentPadding: EdgeInsets.all(12),
+                  border: const OutlineInputBorder(),
+                  contentPadding: const EdgeInsets.all(12),
                 ),
                 style: themeTextStyle.headingM,
               ),
@@ -67,7 +66,7 @@ class CreateRotineGroupPage extends StatelessWidget {
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: theme.primaryColor,
-                  padding: EdgeInsets.symmetric(vertical: 16, horizontal: 40),
+                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 40),
                 ),
                 child: Text(
                   'Criar Grupo',

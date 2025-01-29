@@ -187,6 +187,7 @@ Widget _buildCreateRotineGroupPage(
         title: 'Criar Grupo',
         onPressed: () async {
           await setupProfileViewModel.createGroup();
+          // ignore: use_build_context_synchronously
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Group created successfully!')),
           );

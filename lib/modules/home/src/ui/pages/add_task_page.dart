@@ -19,9 +19,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final themeTextStyle = theme.extension<CnTextStyles>();
+    theme.extension<CnTextStyles>();
     final themeSpacing = theme.extension<CnSpacing>();
-    final size = MediaQuery.of(context).size;
 
     return CnScaffoldWidget(
       appBar: const CnAppBarWidget(title: 'Add Task', showBackButton: true),
@@ -34,7 +33,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
           SizedBox(height: themeSpacing!.spacing24px),
           CnDropdownWidget(
             labelText: "Grupo",
-            items: ["Opção 1", "Opção 2", "Opção 3"],
+            items: const ["Opção 1", "Opção 2", "Opção 3"],
             selectedValue: selectedValue, // Começa como null
             onChanged: (value) {
               setState(() {
@@ -42,10 +41,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
               });
             },
           ),
-          SizedBox(height: themeSpacing!.spacing24px),
+          SizedBox(height: themeSpacing.spacing24px),
           CnDropdownWidget(
             labelText: "Categoria",
-            items: ["Opção 1", "Opção 2", "Opção 3"],
+            items: const ["Opção 1", "Opção 2", "Opção 3"],
             selectedValue: selectedValue, // Começa como null
             onChanged: (value) {
               setState(() {
@@ -53,10 +52,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
               });
             },
           ),
-          SizedBox(height: themeSpacing!.spacing24px),
+          SizedBox(height: themeSpacing.spacing24px),
           CnDropdownWidget(
             labelText: "Selecionar Participantes",
-            items: ["Opção 1", "Opção 2", "Opção 3"],
+            items: const ["Opção 1", "Opção 2", "Opção 3"],
             selectedValue: selectedValue, // Começa como null
             onChanged: (value) {
               setState(() {

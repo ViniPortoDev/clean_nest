@@ -1,4 +1,4 @@
-import 'package:clean_nest/core/domain/entities/user.dart';
+import 'package:clean_nest/core/entities/user.dart';
 
 abstract class AuthRepository {
   Future<User> login(String email, String password);
