@@ -5,9 +5,12 @@ class ChooseMascotRepositoryImpl implements ChooseMascotRepository {
   @override
   List<Mascot> fetchMascots() {
     return [
-      Mascot(id: 1, name: 'Mascot A', imageUrl: 'assets/images/mascot.jpg'),
-      Mascot(id: 2, name: 'Mascot B', imageUrl: 'assets/images/mascot.jpg'),
-      Mascot(id: 3, name: 'Mascot C', imageUrl: 'assets/images/mascot.jpg'),
+      Mascot(
+          id: 1, name: 'Mascot A', imageUrl: 'assets/images/logo_elizeu.png'),
+      Mascot(
+          id: 2, name: 'Mascot B', imageUrl: 'assets/images/logo_elizeu.png'),
+      Mascot(
+          id: 3, name: 'Mascot C', imageUrl: 'assets/images/logo_elizeu.png'),
     ];
   }
 }
