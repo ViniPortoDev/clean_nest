@@ -38,7 +38,7 @@ class OnboardingPage extends StatelessWidget {
               CnPrimaryButtonWidget(
                 title: 'Criar conta',
                 onPressed: () {
-                  Modular.to.pushNamed('/auth/sign_up');
+                  Modular.to.navigate('/auth/sign_up');
                 },
                 height: 70,
               ),

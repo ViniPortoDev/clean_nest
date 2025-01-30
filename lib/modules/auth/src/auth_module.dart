@@ -9,6 +9,7 @@ import 'package:clean_nest/modules/auth/src/data/repositories/choose_mascot_repo
 import 'package:clean_nest/modules/auth/src/domain/repositories/group_repository.dart';
 import 'package:clean_nest/modules/auth/src/domain/usecases/create_user.dart';
 import 'package:clean_nest/modules/auth/src/domain/usecases/get_current_user.dart';
+import 'package:clean_nest/modules/auth/src/domain/usecases/update_user.dart';
 import 'package:clean_nest/modules/auth/src/ui/pages/setup_profile_page.dart';
 import 'package:clean_nest/modules/auth/src/ui/pages/create_rotine_group_page.dart';
 import 'package:clean_nest/modules/auth/src/ui/pages/sign_in_page.dart';
@@ -39,7 +40,7 @@ class AuthModule extends Module {
     //Usecases
     i.addLazySingleton<CreateUserUsecase>(CreateUser.new);
     i.addLazySingleton<GetCurrentUserUsecase>(GetCurrentUser.new);
-
+    i.addLazySingleton<UpdateUserUsecase>(UpdateUser.new);
   }
 
   @override

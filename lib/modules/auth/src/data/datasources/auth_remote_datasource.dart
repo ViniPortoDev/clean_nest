@@ -1,5 +1,5 @@
 import 'package:clean_nest/core/utils/mock_data.dart';
-import 'package:clean_nest/modules/auth/src/data/models/user_model.dart';
+import 'package:clean_nest/core/models/user_model.dart';
 
 abstract class AuthRemoteDatasource {
   Future<UserModel> login(String email, String password);

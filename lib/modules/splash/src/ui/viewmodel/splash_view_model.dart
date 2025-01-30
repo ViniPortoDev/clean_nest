@@ -19,9 +19,9 @@ class SplashViewModel extends BaseViewModel {
 
     //TODO tirar a "!" do isFirstLaunch
     if (!isFirstLaunch!) {
-      Modular.to.pushNamed('/onboarding/');
+      Modular.to.pushNamedAndRemoveUntil('/onboarding/', (route) => false);
     } else {
-      Modular.to.pushNamed('/home/');
+      Modular.to.pushNamedAndRemoveUntil('/home/' , (route) => false);
     }
   }
 }
