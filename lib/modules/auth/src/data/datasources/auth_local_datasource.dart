@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:clean_nest/core/entities/mascot.dart';
 import 'package:clean_nest/core/services/local_storage/shared_preference/shared_preferences_service.dart';
-import 'package:clean_nest/modules/auth/src/data/models/user_model.dart';
+import 'package:clean_nest/core/models/user_model.dart';
 
 abstract class AuthLocalDatasource {
   Future<void> saveUser(Map<String, dynamic> user);
@@ -34,6 +34,4 @@ class AuthLocalDatasourceImpl implements AuthLocalDatasource {
   Future<void> clearUser() async {
     await sharedPreferencesService.remove(_userKey);
   }
-
-
 }

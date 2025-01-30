@@ -1,38 +1,50 @@
-import 'package:clean_nest/modules/home/src/domain/entities/task.dart';
 import 'package:flutter/material.dart';
-import 'package:clean_nest/core/domain/entities/member.dart';
 
 class TaskViewModel extends ChangeNotifier {
-  String _selectedGroup = 'Familia Porto';
-  String _selectedCategory = 'Cozinha';
-  List<Member> _selectedMembers = [];
-  final List<Task> _tasks = [];
+  String? _type;
+  String? _group;
+  String? _category;
+  List<String> _participants = [];
 
-  // Getters
-  String get selectedGroup => _selectedGroup;
-  String get selectedCategory => _selectedCategory;
-  List<Member> get selectedMembers => _selectedMembers;
-  List<Task> get tasks => _tasks;
+  String? get type => _type;
+  String? get group => _group;
+  String? get category => _category;
+  List<String> get participants => _participants;
 
-  // Métodos para atualizar o estado
-  void updateGroup(String group) {
-    _selectedGroup = group;
+  void setType(String value) {
+    _type = value;
     notifyListeners();
   }
 
-  void updateCategory(String category) {
-    _selectedCategory = category;
+  void setGroup(String value) {
+    _group = value;
     notifyListeners();
   }
 
-  void updateMembers(List<Member> members) {
-    _selectedMembers = members;
+  void setCategory(String value) {
+    _category = value;
     notifyListeners();
   }
 
-  // Método para adicionar a tarefa
-  void addTask(Task task) {
-    _tasks.add(task);
-    notifyListeners();  // Notifica a UI sobre a mudança
+  void setParticipants(List<String> participants) {
+    _participants = participants;
+    notifyListeners();
+  }
+
+  void addParticipant(String participant) {
+    _participants.add(participant);
+    notifyListeners();
+  }
+
+  void removeParticipant(String participant) {
+    _participants.remove(participant);
+    notifyListeners();
+  }
+
+  bool canAddTask() {
+    return _type != null &&
+        _group != null &&
+        _category != null &&
+        _participants.isNotEmpty;
   }
 }

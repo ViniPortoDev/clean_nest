@@ -1,6 +1,5 @@
-import 'package:clean_nest/core/entities/group.dart';
 import 'package:clean_nest/core/entities/user.dart';
-import 'package:clean_nest/core/entities/mascot.dart';
+import 'package:clean_nest/modules/auth/src/data/models/group_model.dart';
 import 'package:clean_nest/modules/auth/src/data/models/mascot_model.dart';
 
 class UserModel extends User {
@@ -29,8 +28,8 @@ class UserModel extends User {
       email: json['email'],
       password: json['password'],
       mascot: MascotModel.fromMap(json['mascot']),
-      groups:
-          List<Group>.from(json['groups'].map((group) => Group.fromMap(group))),
+      groups: List<GroupModel>.from(
+          json['groups'].map((group) => GroupModel.fromMap(group))),
     );
   }
 }

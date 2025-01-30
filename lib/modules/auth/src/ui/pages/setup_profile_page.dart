@@ -88,7 +88,8 @@ class _SetupProfilePageState extends State<SetupProfilePage> {
             CnPrimaryButtonWidget(
               title: 'Continuar',
               onPressed: () {
-                Modular.to.pushNamed('/home/');
+                print(widget.setupProfileViewModel.user);
+                // Modular.to.pushNamed('/home/');
               },
               height: 70,
             ),

@@ -1,10 +1,10 @@
-// import 'package:clean_nest/modules/home/src/ui/viewmodels/task_viewmodel.dart';
-// import 'package:flutter/material.dart';
+import 'package:clean_nest/modules/home/src/ui/viewmodels/task_viewmodel.dart';
+import 'package:flutter/material.dart';
 
-// class AddTaskBottomSheet extends StatelessWidget {
-//   final TaskViewModel viewModel;
+class AddTaskBottomSheet extends StatelessWidget {
+  final TaskViewModel viewModel;
 
-//   const AddTaskBottomSheet({super.key, required this.viewModel});
+  const AddTaskBottomSheet({super.key, required this.viewModel});
 
   @override
   Widget build(BuildContext context) {
