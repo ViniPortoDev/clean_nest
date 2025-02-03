@@ -1,8 +1,10 @@
 import 'package:clean_nest/core/entities/user.dart';
+import 'package:clean_nest/core/errors/failure.dart';
 import 'package:clean_nest/modules/auth/src/domain/repositories/auth_repository.dart';
+import 'package:dartz/dartz.dart';
 
 abstract class LoginUsecase {
-  Future<User> call(String email, String password);
+  Future<Either<Failure, User>> call(String email, String password);
 }
 
 class LoginUser implements LoginUsecase {
@@ -11,8 +13,8 @@ class LoginUser implements LoginUsecase {
   LoginUser(this.authRepository);
 
   @override
-  Future<User> call(String email, String password) async {
-    final user = await authRepository.login(email, password);
-    return user;
+  Future<Either<Failure, User>> call(String email, String password) async {
+    final result = await authRepository.login(email, password);
+    return result;
   }
 }

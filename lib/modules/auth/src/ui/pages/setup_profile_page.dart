@@ -7,7 +7,6 @@ import 'package:clean_nest/shared/widgets/buttons/cn_primary_button_widget.dart'
 import 'package:clean_nest/shared/widgets/inputs/cn_primary_input_widget.dart';
 import 'package:clean_nest/shared/widgets/texts/cn_text_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 
 class SetupProfilePage extends StatefulWidget {
   final SetupProfileViewModel setupProfileViewModel;
@@ -79,12 +78,26 @@ class _SetupProfilePageState extends State<SetupProfilePage> {
                   ),
                 ],
                 onPageChanged: (index) {
-                  widget.setupProfileViewModel
-                      .setPageIndex(index); // Atualiza o índice
+                  widget.setupProfileViewModel.setPageIndex(index);
                 },
               ),
             ),
             SizedBox(height: themeSpacing.spacing24px),
+            // Notificação de mensagens (Sucesso/Erro)
+            ValueListenableBuilder<String?>(
+              valueListenable: widget.setupProfileViewModel.messageNotifier,
+              builder: (context, message, child) {
+                if (message != null) {
+                  // Exibe o SnackBar com a mensagem
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(message)),
+                    );
+                  });
+                }
+                return Container();
+              },
+            ),
             CnPrimaryButtonWidget(
               title: 'Continuar',
               onPressed: () {
@@ -105,9 +118,6 @@ Widget _buildChooseMascotPage(
   CnSpacing themeSpacing,
   Size size,
 ) {
-  // Obtém o ViewModel a partir do Modular
-  // final setupProfileViewModel = Modular.get<SetupProfileViewModel>();
-
   return AnimatedBuilder(
     animation: setupProfileViewModel,
     builder: (context, _) {
@@ -200,10 +210,7 @@ Widget _buildCreateRotineGroupPage(
         title: 'Criar Grupo',
         onPressed: () async {
           await setupProfileViewModel.createGroup();
-          // ignore: use_build_context_synchronously
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Group created successfully!')),
-          );
+          // Se for necessário exibir algo aqui, deixe o ViewModel controlar a lógica
         },
         height: 70,
       ),

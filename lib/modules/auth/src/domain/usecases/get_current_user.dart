@@ -1,8 +1,10 @@
 import 'package:clean_nest/core/entities/user.dart';
+import 'package:clean_nest/core/errors/failure.dart';
 import 'package:clean_nest/modules/auth/src/domain/repositories/auth_repository.dart';
+import 'package:dartz/dartz.dart';
 
 abstract class GetCurrentUserUsecase {
-  Future<User?> call();
+  Future<Either<Failure, User?>> call();
 }
 
 class GetCurrentUser implements GetCurrentUserUsecase {
@@ -11,8 +13,8 @@ class GetCurrentUser implements GetCurrentUserUsecase {
   GetCurrentUser(this.authRepository);
 
   @override
-  Future<User?> call() async {
-    final user = await authRepository.getCurrentUser();
-    return user;
+  Future<Either<Failure, User?>> call() async {
+    final result = await authRepository.getCurrentUser();
+    return result;
   }
 }
