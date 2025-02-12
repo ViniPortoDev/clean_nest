@@ -4,6 +4,7 @@ import 'package:clean_nest/core/entities/user.dart';
 import 'package:clean_nest/core/services/errors/network_error.dart';
 import 'package:clean_nest/core/services/errors/storage_error.dart';
 import 'package:clean_nest/core/viewmodel/base_view_model.dart';
+import 'package:clean_nest/modules/auth/src/domain/errors/auth_errors.dart';
 import 'package:clean_nest/modules/auth/src/domain/repositories/choose_mascot_repository.dart';
 import 'package:clean_nest/core/entities/mascot.dart';
 import 'package:clean_nest/modules/auth/src/domain/usecases/get_current_user.dart';
@@ -47,10 +48,8 @@ class SetupProfileViewModel extends BaseViewModel {
     setLoading(true);
     selectedMascot = mascot;
 
-    if (_user != null) {
-      final updatedUser = _user!.copyWith(
-        mascot: mascot,
-      );
+    if (user != null) {
+      final updatedUser = user!.copyWith(mascot: mascot);
       final result = await updateUserUsecase.call(updatedUser);
       result.fold(
         (error) {
@@ -102,7 +101,7 @@ class SetupProfileViewModel extends BaseViewModel {
       result.fold(
         (error) {
           _user = null;
-          // Passa a mensagem de erro para a UI
+          // Aqui você pode tratar erros de forma mais detalhada
           messageNotifier.value = _handleError(error);
         },
         (user) {
@@ -129,12 +128,14 @@ class SetupProfileViewModel extends BaseViewModel {
   }
 
   String _handleError(Failure error) {
-    if (error is NetworkError) {
-      return "Erro de rede: ${error.message}";
-    } else if (error is StorageError) {
-      return "Erro de armazenamento: ${error.message}";
-    } else {
-      return "Erro desconhecido: ${error.message}";
+    // Tratar cada tipo de erro de forma específica
+    if (error is StorageError) {
+      return "Erro ao acessar os dados locais.";
+    } else if (error is NetworkError) {
+      return "Erro de conexão com a internet.";
+    } else if (error is AuthError) {
+      return "Erro de autenticação. Tente novamente.";
     }
+    return "Erro desconhecido. Tente novamente mais tarde.";
   }
 }

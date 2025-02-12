@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:clean_nest/core/errors/failure.dart';
-import 'package:clean_nest/core/services/errors/storage_error.dart';
-import 'package:dartz/dartz.dart';
-import 'package:clean_nest/core/services/local_storage/shared_preference/shared_preferences_service.dart';
 import 'package:clean_nest/core/models/user_model.dart';
+import 'package:clean_nest/core/services/errors/storage_error.dart';
+import 'package:clean_nest/core/services/local_storage/shared_preference/shared_preferences_service.dart';
+import 'package:dartz/dartz.dart';
 
 abstract class AuthLocalDatasource {
   Future<Either<Failure, void>> saveUser(Map<String, dynamic> user);
@@ -23,12 +23,17 @@ class AuthLocalDatasourceImpl implements AuthLocalDatasource {
     try {
       final userJson = sharedPreferencesService.getString(_userKey);
       if (userJson != null) {
-        return Right(UserModel.fromMap(jsonDecode(userJson)));
+        try {
+          return Right(UserModel.fromMap(jsonDecode(userJson)));
+        } catch (e) {
+          return Left(StorageReadError(
+              message: 'Erro ao decodificar os dados de usuário.'));
+        }
       }
-      throw Left(StorageError(
+      return Left(StorageReadError(
           message: 'Usuário não encontrado no armazenamento local.'));
     } catch (e) {
-      throw Left(StorageError(
+      return Left(StorageReadError(
           message: 'Erro ao buscar o usuário no armazenamento local.'));
     }
   }
@@ -39,7 +44,7 @@ class AuthLocalDatasourceImpl implements AuthLocalDatasource {
       await sharedPreferencesService.saveString(_userKey, jsonEncode(user));
       return const Right(null); // Retorna sucesso sem valor adicional
     } catch (e) {
-      throw Left(StorageError(
+      return Left(StorageWriteError(
           message: 'Erro ao salvar o usuário no armazenamento local.'));
     }
   }
@@ -50,7 +55,7 @@ class AuthLocalDatasourceImpl implements AuthLocalDatasource {
       await sharedPreferencesService.remove(_userKey);
       return const Right(null); // Retorna sucesso sem valor adicional
     } catch (e) {
-      throw Left(StorageError(
+      return Left(StorageDeleteError(
           message: 'Erro ao limpar o usuário do armazenamento local.'));
     }
   }

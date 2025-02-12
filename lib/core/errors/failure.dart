@@ -5,17 +5,17 @@ abstract class Failure {
 }
 
 class UnknownError extends Failure {
-  const UnknownError({required String meessage}) : super(meessage);
+  const UnknownError({required String message}) : super( message);
 }
 
 class UnauthorizedError extends Failure {
-  const UnauthorizedError({required String meessage}) : super(meessage);
+  const UnauthorizedError({required String message}) : super(message);
 }
 
 class NotFoundError extends Failure {
-  const NotFoundError({required String meessage}) : super(meessage);
+  const NotFoundError({required String message}) : super(message);
 }
 
 class BadRequestError extends Failure {
-  const BadRequestError({required String meessage}) : super(meessage);
+  const BadRequestError({required String message}) : super(message);
 }

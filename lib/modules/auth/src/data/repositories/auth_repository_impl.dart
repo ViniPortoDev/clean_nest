@@ -32,7 +32,7 @@ class AuthRepositoryImpl implements AuthRepository {
           name: 'Mascot 1',
           imageUrl: 'assets/images/logo_elizeu.png',
         ),
-        groups: [],
+        groups: user.groups,
       );
       await localDatasource.saveUser(userModel.toMap());
       return const Right(null); // Sucesso
@@ -75,7 +75,7 @@ class AuthRepositoryImpl implements AuthRepository {
       );
       return Right(user); // Sucesso
     } catch (e) {
-      return Left(NetworkError(e.toString())); // Erro
+      return Left(NetworkError("Erro ao fazer login: ${e.toString()}")); // Erro
     }
   }
 
@@ -88,18 +88,16 @@ class AuthRepositoryImpl implements AuthRepository {
       return const Right(null); // Sucesso
     } catch (error) {
       if (error is StorageError) {
-        return Left(error); // Se for um erro conhecido
+        return Left(error); // Se for um erro conhecido de armazenamento
       } else if (error is NetworkError) {
         return Left(NetworkError("Falha ao conectar com o servidor"));
       } else {
-        return Left(NetworkError("Erro mal tratadoooooooooo"));
+        return Left(NetworkError("Erro desconhecido ao tentar fazer logout"));
       }
     }
   }
 
   // getCurrentUser method
-  // Dentro da sua função getCurrentUser
-
   @override
   Future<Either<Failure, User?>> getCurrentUser() async {
     try {
@@ -107,7 +105,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
       return userModelEither.fold(
         (error) {
-          return Left(error); // Se ocorrer um erro, devolve o erro
+          return Left(error); // Retorna o erro específico
         },
         (userModel) {
           if (userModel != null) {
@@ -119,14 +117,13 @@ class AuthRepositoryImpl implements AuthRepository {
               mascot: userModel.mascot,
               groups: userModel.groups,
             );
-            return Right(user); // Se não houver erro e o usuário existir
+            return Right(user);
           }
-          return const Right(null); // Se não houver usuário encontrado
+          return const Right(null); // Usuário não encontrado
         },
       );
     } catch (e) {
-      print('Erro ao obter usuário: $e');
-      return Left(StorageError(message: "Erro ao obter o usuário local"));
+      return Left(StorageError(message: "Erro ao obter o usuário local: ${e.toString()}"));
     }
   }
 }
