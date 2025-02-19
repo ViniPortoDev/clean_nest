@@ -23,8 +23,8 @@ class Group {
     return Group(
       id: id ?? this.id,
       name: name ?? this.name,
-      members: members ?? this.members,
-      tasks: tasks ?? this.tasks,
+      members: members ?? List.unmodifiable(this.members),
+      tasks: tasks ?? List.unmodifiable(this.tasks),
     );
   }
 }

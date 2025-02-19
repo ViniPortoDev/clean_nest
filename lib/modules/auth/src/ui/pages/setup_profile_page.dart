@@ -7,6 +7,7 @@ import 'package:clean_nest/shared/widgets/buttons/cn_primary_button_widget.dart'
 import 'package:clean_nest/shared/widgets/inputs/cn_primary_input_widget.dart';
 import 'package:clean_nest/shared/widgets/texts/cn_text_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class SetupProfilePage extends StatefulWidget {
   final SetupProfileViewModel setupProfileViewModel;
@@ -21,7 +22,7 @@ class _SetupProfilePageState extends State<SetupProfilePage> {
   @override
   void initState() {
     super.initState();
-    widget.setupProfileViewModel.loadUser();
+    widget.setupProfileViewModel.getCurrentUser();
   }
 
   @override
@@ -33,80 +34,68 @@ class _SetupProfilePageState extends State<SetupProfilePage> {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Configure a conta')),
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          children: [
-            const CnTextWidget(
-                text:
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ut magna quis metus ullamcorper ullamcorper. Vivamus commodo condimentum leo, vel imperdiet metus ullamcorper nec. Nam suscipit lorem vitae pharetra feugiat.'),
-            SizedBox(height: themeSpacing!.spacing24px),
-            ConstrainedBox(
-              constraints: const BoxConstraints(maxHeight: 50),
-              child: ListView.separated(
-                separatorBuilder: (context, index) =>
-                    SizedBox(width: themeSpacing.spacing12px),
-                itemCount: 2,
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return ValueListenableBuilder<int>(
-                    valueListenable:
-                        widget.setupProfileViewModel.pageIndexNotifier,
-                    builder: (context, currentPageIndex, child) {
-                      return PaginationContainerWidget(
-                        index: index + 1,
-                        isSelected: currentPageIndex == index,
-                      );
-                    },
-                  );
-                },
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            children: [
+              const CnTextWidget(
+                  text:
+                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ut magna quis metus ullamcorper ullamcorper. Vivamus commodo condimentum leo, vel imperdiet metus ullamcorper nec. Nam suscipit lorem vitae pharetra feugiat.'),
+              SizedBox(height: themeSpacing!.spacing24px),
+              SizedBox(
+                height: size.height * 0.6,
+                child: PageView(
+                  children: [
+                    _buildChooseMascotPage(
+                        widget.setupProfileViewModel, themeSpacing, size),
+                    _buildCreateRotineGroupPage(
+                      context,
+                      widget.setupProfileViewModel,
+                      themeSpacing,
+                      themeTextStyle!,
+                      size,
+                    ),
+                  ],
+                  onPageChanged: (index) {
+                    widget.setupProfileViewModel.setPageIndex(index);
+                  },
+                ),
               ),
-            ),
-            SizedBox(
-              height: size.height * 0.6,
-              child: PageView(
-                children: [
-                  _buildChooseMascotPage(
-                      widget.setupProfileViewModel, themeSpacing, size),
-                  _buildCreateRotineGroupPage(
-                    context,
-                    widget.setupProfileViewModel,
-                    themeSpacing,
-                    themeTextStyle!,
-                    size,
-                  ),
-                ],
-                onPageChanged: (index) {
-                  widget.setupProfileViewModel.setPageIndex(index);
-                },
-              ),
-            ),
-            SizedBox(height: themeSpacing.spacing24px),
-            // Notificação de mensagens (Sucesso/Erro)
-            ValueListenableBuilder<String?>(
-              valueListenable: widget.setupProfileViewModel.messageNotifier,
-              builder: (context, message, child) {
-                if (message != null) {
-                  // Exibe o SnackBar com a mensagem
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(message)),
+              SizedBox(height: themeSpacing.spacing24px),
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxHeight: 50),
+                child: ListView.separated(
+                  separatorBuilder: (context, index) =>
+                      SizedBox(width: themeSpacing.spacing12px),
+                  itemCount: 2,
+                  scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return ValueListenableBuilder<int>(
+                      valueListenable:
+                          widget.setupProfileViewModel.pageIndexNotifier,
+                      builder: (context, currentPageIndex, child) {
+                        return PaginationContainerWidget(
+                          index: index + 1,
+                          isSelected: currentPageIndex == index,
+                        );
+                      },
                     );
-                  });
-                }
-                return Container();
-              },
-            ),
-            CnPrimaryButtonWidget(
-              title: 'Continuar',
-              onPressed: () {
-                print(widget.setupProfileViewModel.user);
-                // Modular.to.pushNamed('/home/');
-              },
-              height: 70,
-            ),
-          ],
+                  },
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: TextButton(
+                    onPressed: () async {
+                      await widget.setupProfileViewModel.updateUser();
+                      Modular.to.pushNamed('/home/');
+                    },
+                    child: Text('Finalizar')),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -134,8 +123,8 @@ Widget _buildChooseMascotPage(
               (index) {
                 final mascot = setupProfileViewModel.mascots[index];
                 return GestureDetector(
-                  onTap: () async {
-                    await setupProfileViewModel.selectMascot(mascot);
+                  onTap: () {
+                    setupProfileViewModel.selectMascot(mascot);
                   },
                   child: Column(
                     children: [
@@ -208,8 +197,8 @@ Widget _buildCreateRotineGroupPage(
       // Botão para criar o grupo
       CnPrimaryButtonWidget(
         title: 'Criar Grupo',
-        onPressed: () async {
-          await setupProfileViewModel.createGroup();
+        onPressed: () {
+          setupProfileViewModel.createGroup();
           // Se for necessário exibir algo aqui, deixe o ViewModel controlar a lógica
         },
         height: 70,

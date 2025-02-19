@@ -1,16 +1,13 @@
 // lib/modules/auth/src/ui/viewmodels/choose_mascot_viewmodel.dart
 import 'package:clean_nest/core/entities/group.dart';
 import 'package:clean_nest/core/entities/user.dart';
-import 'package:clean_nest/core/services/errors/network_error.dart';
-import 'package:clean_nest/core/services/errors/storage_error.dart';
+import 'package:clean_nest/core/services/error_handling_service.dart';
 import 'package:clean_nest/core/viewmodel/base_view_model.dart';
-import 'package:clean_nest/modules/auth/src/domain/errors/auth_errors.dart';
 import 'package:clean_nest/modules/auth/src/domain/repositories/choose_mascot_repository.dart';
 import 'package:clean_nest/core/entities/mascot.dart';
 import 'package:clean_nest/modules/auth/src/domain/usecases/get_current_user.dart';
 import 'package:clean_nest/modules/auth/src/domain/usecases/update_user.dart';
 import 'package:flutter/material.dart';
-import 'package:clean_nest/core/errors/failure.dart';
 
 class SetupProfileViewModel extends BaseViewModel {
   final ChooseMascotRepository chooseMascotrepository;
@@ -24,7 +21,6 @@ class SetupProfileViewModel extends BaseViewModel {
   );
 
   final ValueNotifier<int> pageIndexNotifier = ValueNotifier<int>(0);
-  int get currentPageIndex => pageIndexNotifier.value;
 
   TextEditingController groupNameController = TextEditingController();
 
@@ -35,7 +31,6 @@ class SetupProfileViewModel extends BaseViewModel {
 
   Mascot? selectedMascot;
 
-  // Estado de erro ou sucesso
   ValueNotifier<String?> messageNotifier = ValueNotifier<String?>(null);
 
   void setPageIndex(int index) {
@@ -44,75 +39,7 @@ class SetupProfileViewModel extends BaseViewModel {
     }
   }
 
-  Future<void> selectMascot(Mascot mascot) async {
-    setLoading(true);
-    selectedMascot = mascot;
-
-    if (user != null) {
-      final updatedUser = user!.copyWith(mascot: mascot);
-      final result = await updateUserUsecase.call(updatedUser);
-      result.fold(
-        (error) {
-          // Passa a mensagem de erro para a UI
-          messageNotifier.value = _handleError(error);
-        },
-        (_) {
-          // Passa a mensagem de sucesso para a UI
-          messageNotifier.value = "Mascote selecionado com sucesso!";
-        },
-      );
-    }
-    setLoading(false);
-  }
-
-  Future<void> createGroup() async {
-    setLoading(true);
-
-    if (_user != null && groupNameController.text.isNotEmpty) {
-      final newGroup = Group(
-        id: DateTime.now().millisecondsSinceEpoch,
-        name: groupNameController.text,
-        members: [],
-        tasks: [],
-      );
-
-      final updatedUser = _user!.copyWith(
-        groups: [newGroup],
-      );
-      final result = await updateUserUsecase.call(updatedUser);
-      result.fold(
-        (error) {
-          // Passa a mensagem de erro para a UI
-          messageNotifier.value = _handleError(error);
-        },
-        (_) {
-          // Passa a mensagem de sucesso para a UI
-          messageNotifier.value = "Grupo criado com sucesso!";
-        },
-      );
-    }
-    setLoading(false);
-  }
-
-  Future<void> loadUser() async {
-    setLoading(true);
-    try {
-      final result = await getCurrentUserUsecase.call();
-      result.fold(
-        (error) {
-          _user = null;
-          // Aqui você pode tratar erros de forma mais detalhada
-          messageNotifier.value = _handleError(error);
-        },
-        (user) {
-          _user = user;
-        },
-      );
-    } finally {
-      setLoading(false);
-    }
-  }
-
+  // carrega os mascots mockados
   void loadMascots() {
     setLoading(true);
     try {
@@ -127,15 +54,69 @@ class SetupProfileViewModel extends BaseViewModel {
     }
   }
 
-  String _handleError(Failure error) {
-    // Tratar cada tipo de erro de forma específica
-    if (error is StorageError) {
-      return "Erro ao acessar os dados locais.";
-    } else if (error is NetworkError) {
-      return "Erro de conexão com a internet.";
-    } else if (error is AuthError) {
-      return "Erro de autenticação. Tente novamente.";
+  //carrega o usuario atual
+  Future<void> getCurrentUser() async {
+    setLoading(true);
+    try {
+      final result = await getCurrentUserUsecase.call();
+      result.fold(
+        (error) {
+          _user = null;
+          // Aqui você pode tratar erros de forma mais detalhada
+          messageNotifier.value = ErrorHandlingService.handleError(error);
+        },
+        (user) {
+          _user = user;
+        },
+      );
+    } finally {
+      setLoading(false);
     }
-    return "Erro desconhecido. Tente novamente mais tarde.";
+  }
+
+  //seleciona o mascote
+  void selectMascot(Mascot mascot) {
+    setLoading(true);
+    selectedMascot = mascot;
+
+    if (_user != null) {
+      final updatedUser = _user!.copyWith(mascot: mascot);
+
+      _user = updatedUser;
+    }
+    setLoading(false);
+  }
+
+  //cria o grupo
+  void createGroup() {
+    setLoading(true);
+
+    if (_user != null && groupNameController.text.isNotEmpty) {
+      final newGroup = Group(
+        id: DateTime.now().millisecondsSinceEpoch,
+        name: groupNameController.text,
+        members: [],
+        tasks: [],
+      );
+
+      final updatedUser = _user!.copyWith(groups: [..._user!.groups, newGroup]);
+
+      _user = updatedUser;
+    }
+    setLoading(false);
+  }
+
+  //atualiza o usuario
+  Future<void> updateUser() async {
+    setLoading(true);
+
+    if (_user != null) {
+      final result = await updateUserUsecase.call(_user!);
+      result.fold(
+          (error) =>
+              messageNotifier.value = ErrorHandlingService.handleError(error),
+          (success) => messageNotifier.value = "Usuário configuradinho");
+    }
+    setLoading(false);
   }
 }

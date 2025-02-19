@@ -34,7 +34,9 @@ class AuthRepositoryImpl implements AuthRepository {
         ),
         groups: user.groups,
       );
+
       await localDatasource.saveUser(userModel.toMap());
+
       return const Right(null); // Sucesso
     } catch (e) {
       return Left(StorageError(message: "Erro ao salvar o usuário localmente"));
@@ -53,7 +55,8 @@ class AuthRepositoryImpl implements AuthRepository {
         mascot: user.mascot,
         groups: user.groups,
       );
-      await localDatasource.saveUser(userModel.toMap());
+      final userMap = userModel.toMap();
+      await localDatasource.saveUser(userMap);
       return const Right(null); // Sucesso
     } catch (e) {
       return Left(StorageError(message: "Erro ao atualizar o usuário"));
@@ -123,7 +126,8 @@ class AuthRepositoryImpl implements AuthRepository {
         },
       );
     } catch (e) {
-      return Left(StorageError(message: "Erro ao obter o usuário local: ${e.toString()}"));
+      return Left(StorageError(
+          message: "Erro ao obter o usuário local: ${e.toString()}"));
     }
   }
 }

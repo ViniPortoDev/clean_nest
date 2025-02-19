@@ -18,6 +18,14 @@ class GroupModel extends Group {
       'tasks': tasks,
     };
   }
+    factory GroupModel.fromEntity(Group group) {
+    return GroupModel(
+      id: group.id,
+      name: group.name,
+      members: group.members, // Se você precisar de um mapeamento específico para membros
+      tasks: group.tasks, // Se você precisar de um mapeamento específico para tarefas
+    );
+  }
 
   factory GroupModel.fromMap(Map<String, dynamic> json) {
     return GroupModel(
