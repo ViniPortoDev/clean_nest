@@ -14,6 +14,7 @@ class MascotModel extends Mascot {
       imageUrl: map['imageUrl'],
     );
   }
+  
 
   Map<String, dynamic> toMap() {
     return {

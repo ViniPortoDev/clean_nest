@@ -22,7 +22,7 @@ class _SetupProfilePageState extends State<SetupProfilePage> {
   @override
   void initState() {
     super.initState();
-    widget.setupProfileViewModel.loadUser();
+    widget.setupProfileViewModel.getCurrentUser();
   }
 
   @override
@@ -34,66 +34,68 @@ class _SetupProfilePageState extends State<SetupProfilePage> {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Configure a conta')),
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          children: [
-            const CnTextWidget(
-                text:
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ut magna quis metus ullamcorper ullamcorper. Vivamus commodo condimentum leo, vel imperdiet metus ullamcorper nec. Nam suscipit lorem vitae pharetra feugiat.'),
-            SizedBox(height: themeSpacing!.spacing24px),
-            ConstrainedBox(
-              constraints: const BoxConstraints(maxHeight: 50),
-              child: ListView.separated(
-                separatorBuilder: (context, index) =>
-                    SizedBox(width: themeSpacing.spacing12px),
-                itemCount: 2,
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return ValueListenableBuilder<int>(
-                    valueListenable:
-                        widget.setupProfileViewModel.pageIndexNotifier,
-                    builder: (context, currentPageIndex, child) {
-                      return PaginationContainerWidget(
-                        index: index + 1,
-                        isSelected: currentPageIndex == index,
-                      );
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            children: [
+              const CnTextWidget(
+                  text:
+                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ut magna quis metus ullamcorper ullamcorper. Vivamus commodo condimentum leo, vel imperdiet metus ullamcorper nec. Nam suscipit lorem vitae pharetra feugiat.'),
+              SizedBox(height: themeSpacing!.spacing24px),
+              SizedBox(
+                height: size.height * 0.6,
+                child: PageView(
+                  children: [
+                    _buildChooseMascotPage(
+                        widget.setupProfileViewModel, themeSpacing, size),
+                    _buildCreateRotineGroupPage(
+                      context,
+                      widget.setupProfileViewModel,
+                      themeSpacing,
+                      themeTextStyle!,
+                      size,
+                    ),
+                  ],
+                  onPageChanged: (index) {
+                    widget.setupProfileViewModel.setPageIndex(index);
+                  },
+                ),
+              ),
+              SizedBox(height: themeSpacing.spacing24px),
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxHeight: 50),
+                child: ListView.separated(
+                  separatorBuilder: (context, index) =>
+                      SizedBox(width: themeSpacing.spacing12px),
+                  itemCount: 2,
+                  scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return ValueListenableBuilder<int>(
+                      valueListenable:
+                          widget.setupProfileViewModel.pageIndexNotifier,
+                      builder: (context, currentPageIndex, child) {
+                        return PaginationContainerWidget(
+                          index: index + 1,
+                          isSelected: currentPageIndex == index,
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: TextButton(
+                    onPressed: () async {
+                      await widget.setupProfileViewModel.updateUser();
+                      Modular.to.pushNamed('/home/');
                     },
-                  );
-                },
+                    child: Text('Finalizar')),
               ),
-            ),
-            SizedBox(
-              height: size.height * 0.6,
-              child: PageView(
-                children: [
-                  _buildChooseMascotPage(
-                      widget.setupProfileViewModel, themeSpacing, size),
-                  _buildCreateRotineGroupPage(
-                    context,
-                    widget.setupProfileViewModel,
-                    themeSpacing,
-                    themeTextStyle!,
-                    size,
-                  ),
-                ],
-                onPageChanged: (index) {
-                  widget.setupProfileViewModel
-                      .setPageIndex(index); // Atualiza o índice
-                },
-              ),
-            ),
-            SizedBox(height: themeSpacing.spacing24px),
-            CnPrimaryButtonWidget(
-              title: 'Continuar',
-              onPressed: () {
-                print(widget.setupProfileViewModel.user);
-                // Modular.to.pushNamed('/home/');
-              },
-              height: 70,
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -105,9 +107,6 @@ Widget _buildChooseMascotPage(
   CnSpacing themeSpacing,
   Size size,
 ) {
-  // Obtém o ViewModel a partir do Modular
-  // final setupProfileViewModel = Modular.get<SetupProfileViewModel>();
-
   return AnimatedBuilder(
     animation: setupProfileViewModel,
     builder: (context, _) {
@@ -124,8 +123,8 @@ Widget _buildChooseMascotPage(
               (index) {
                 final mascot = setupProfileViewModel.mascots[index];
                 return GestureDetector(
-                  onTap: () async {
-                    await setupProfileViewModel.selectMascot(mascot);
+                  onTap: () {
+                    setupProfileViewModel.selectMascot(mascot);
                   },
                   child: Column(
                     children: [
@@ -198,12 +197,9 @@ Widget _buildCreateRotineGroupPage(
       // Botão para criar o grupo
       CnPrimaryButtonWidget(
         title: 'Criar Grupo',
-        onPressed: () async {
-          await setupProfileViewModel.createGroup();
-          // ignore: use_build_context_synchronously
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Group created successfully!')),
-          );
+        onPressed: () {
+          setupProfileViewModel.createGroup();
+          // Se for necessário exibir algo aqui, deixe o ViewModel controlar a lógica
         },
         height: 70,
       ),

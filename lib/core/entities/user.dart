@@ -32,7 +32,7 @@ class User {
       email: email ?? this.email,
       password: password ?? this.password,
       mascot: mascot ?? this.mascot,
-      groups: groups ?? this.groups,
+      groups: groups ?? List.unmodifiable(this.groups),
     );
   }
 }
