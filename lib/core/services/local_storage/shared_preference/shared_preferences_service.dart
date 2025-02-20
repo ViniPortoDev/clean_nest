@@ -44,8 +44,5 @@ class SharedPreferencesService implements LocalStorage {
     await _prefs.remove(key);
   }
 
-  @override
-  Future<void> clear() async {
-    await _prefs.clear();
-  }
+
 }
