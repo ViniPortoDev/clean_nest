@@ -17,11 +17,10 @@ class SplashViewModel extends BaseViewModel {
     bool? isFirstLaunch = preferencesService.getBool('isFirstLaunch');
     setLoading(false);
 
-    //TODO tirar a "!" do isFirstLaunch
-    if (!isFirstLaunch!) {
+    if (isFirstLaunch!) {
       Modular.to.pushNamedAndRemoveUntil('/onboarding/', (route) => false);
     } else {
-      Modular.to.pushNamedAndRemoveUntil('/home/' , (route) => false);
+      Modular.to.pushNamedAndRemoveUntil('/home/', (route) => false);
     }
   }
 }

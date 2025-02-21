@@ -7,7 +7,7 @@ import 'package:clean_nest/core/services/local_storage/local_storage.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 
-abstract class UserLocalDataSource {
+abstract class UserLocalDatasource {
   Future<Either<Failure, void>> saveUser(UserModel user);
   Future<Either<Failure, void>> updateUser(UserModel user);
   Future<Either<Failure, UserModel?>> getCurrentUser();
@@ -15,15 +15,16 @@ abstract class UserLocalDataSource {
   Future<Either<Failure, void>> createUser(UserModel user);
 }
 
-class UserLocalDataSourceImpl implements UserLocalDataSource {
+class UserLocalDatasourceImpl implements UserLocalDatasource {
   final Logger logger = Logger();
   final LocalStorage localStorage;
-  UserLocalDataSourceImpl({required this.localStorage});
+  UserLocalDatasourceImpl({required this.localStorage});
 
   //Verify if user already exists and Create a new user
   @override
   Future<Either<Failure, void>> createUser(UserModel user) async {
     try {
+      //TODO isso aqui nao faz sentido pq o getCurrentUser() não busca os usuários do banco de dados
       final currentUser = await getCurrentUser();
       return currentUser.fold(
         (failure) => Left(failure),

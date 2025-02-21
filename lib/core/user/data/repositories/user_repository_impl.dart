@@ -6,7 +6,7 @@ import 'package:clean_nest/core/user/domain/repositories/user_repository.dart';
 import 'package:dartz/dartz.dart';
 
 class UserRepositoryImpl implements UserRepository {
-  final UserLocalDataSource userLocalDataSource;
+  final UserLocalDatasource userLocalDataSource;
 
   UserRepositoryImpl({required this.userLocalDataSource});
 

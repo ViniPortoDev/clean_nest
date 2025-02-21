@@ -1,4 +1,4 @@
-import 'package:clean_nest/core/utils/mock_data.dart';
+import 'package:clean_nest/core/utils/mocks.dart';
 import 'package:clean_nest/core/models/user_model.dart';
 
 abstract class AuthRemoteDatasource {
@@ -16,7 +16,7 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
 
   @override
   Future<UserModel> login(String email, String password) async {
-    final mock = MockData.userData;
+    final mock = Mocks.currentUser;
 
     if (email == mock['email'] && password == mock['password']) {
       final userModel = UserModel.fromMap(mock);

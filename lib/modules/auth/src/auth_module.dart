@@ -25,9 +25,6 @@ class AuthModule extends Module {
 
     //Repositories
     i.addSingleton<AuthRepository>(AuthRepositoryImpl.new);
-
-    //Usecases
-    i.addLazySingleton<UpdateUserUsecase>(UpdateUser.new);
   }
 
   @override
@@ -40,7 +37,7 @@ class AuthModule extends Module {
     r.child(
       '/setup_profile',
       child: (context) => ProfilePage(
-        profileViewModel: context.read()..loadMascots(),
+        profileViewModel: context.read()..fetchMascots(),
       ),
     );
     r.child('/create_rotine_group',
