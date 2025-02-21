@@ -3,14 +3,14 @@ import 'package:clean_nest/core/models/user_model.dart';
 
 abstract class AuthRemoteDatasource {
   Future<UserModel> login(String email, String password);
-  Future<void> createUser(Map<String, dynamic> user);
   Future<void> logout();
+  Future<void> register(UserModel user);
 }
 
 class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
   @override
-  Future<void> createUser(Map<String, dynamic> user) {
-    // TODO: implement createUser
+  Future<void> register(UserModel user) {
+    // TODO: implement register
     throw UnimplementedError();
   }
 

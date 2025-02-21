@@ -3,23 +3,10 @@ import 'package:clean_nest/core/entities/group.dart';
 import 'package:clean_nest/core/entities/user.dart';
 import 'package:clean_nest/core/services/error_handling_service.dart';
 import 'package:clean_nest/core/viewmodel/base_view_model.dart';
-import 'package:clean_nest/modules/auth/src/domain/repositories/choose_mascot_repository.dart';
 import 'package:clean_nest/core/entities/mascot.dart';
-import 'package:clean_nest/modules/auth/src/domain/usecases/get_current_user.dart';
-import 'package:clean_nest/modules/auth/src/domain/usecases/update_user.dart';
 import 'package:flutter/material.dart';
 
-class SetupProfileViewModel extends BaseViewModel {
-  final ChooseMascotRepository chooseMascotrepository;
-  final GetCurrentUserUsecase getCurrentUserUsecase;
-  final UpdateUserUsecase updateUserUsecase;
-
-  SetupProfileViewModel(
-    this.chooseMascotrepository,
-    this.getCurrentUserUsecase,
-    this.updateUserUsecase,
-  );
-
+class ProfileViewModel extends BaseViewModel {
   final ValueNotifier<int> pageIndexNotifier = ValueNotifier<int>(0);
 
   TextEditingController groupNameController = TextEditingController();

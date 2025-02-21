@@ -2,49 +2,14 @@ import 'package:clean_nest/core/errors/failure.dart';
 import 'package:clean_nest/core/services/errors/network_error.dart';
 import 'package:clean_nest/core/services/errors/storage_error.dart';
 import 'package:dartz/dartz.dart';
-import 'package:clean_nest/core/entities/mascot.dart';
 import 'package:clean_nest/core/entities/user.dart';
-import 'package:clean_nest/core/models/user_model.dart';
 import 'package:clean_nest/modules/auth/src/domain/repositories/auth_repository.dart';
 import 'package:clean_nest/modules/auth/src/data/datasources/auth_remote_datasource.dart';
-import 'package:clean_nest/modules/auth/src/data/datasources/auth_local_datasource.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
-  final AuthLocalDatasource localDatasource;
   final AuthRemoteDatasource remoteDatasource;
 
-  AuthRepositoryImpl({
-    required this.localDatasource,
-    required this.remoteDatasource,
-  });
-
-  // createUser method
-  @override
-  Future<Either<Failure, void>> createUser(User user) async {
-    try {
-      final userModel = UserModel(
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        password: user.password,
-        mascot: Mascot(
-          id: 1,
-          name: 'Mascot 1',
-          imageUrl: 'assets/images/logo_elizeu.png',
-        ),
-        groups: user.groups,
-      );
-
-      await localDatasource.saveUser(userModel.toMap());
-
-      return const Right(null); // Sucesso
-    } catch (e) {
-      return Left(StorageError(message: "Erro ao salvar o usuário localmente"));
-    }
-  }
-
-  // updateUser method
-  
+  AuthRepositoryImpl({required this.remoteDatasource});
 
   // login method
   @override
@@ -70,7 +35,6 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, void>> logout() async {
     try {
       await remoteDatasource.logout();
-      await localDatasource.clearUser();
       return const Right(null); // Sucesso
     } catch (error) {
       if (error is StorageError) {
@@ -83,6 +47,24 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
-  // getCurrentUser method
-  
+  @override
+  Future<Either<Failure, User>> register(
+      String email, String password, String name) async {
+    try {
+      // final token = 'fake_jwt_token';
+      const userId = 1234; // Exemplo de ID do usuário.
+      final user = User(
+          id: userId,
+          name: name,
+          email: email,
+          password: password,
+          groups: []); // Exemplo de usuário.
+
+      // await localDataSource.saveToken(token);
+
+      return Right(user);
+    } catch (e) {
+      return Left(UnexpectedFailure(message: 'Erro ao registrar usuário: $e'));
+    }
+  }
 }

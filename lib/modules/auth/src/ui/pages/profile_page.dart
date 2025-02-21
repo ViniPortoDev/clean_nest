@@ -1,7 +1,7 @@
 import 'package:clean_nest/core/themes/theme_spacings.dart';
 import 'package:clean_nest/core/themes/theme_text_styles.dart';
 import 'package:clean_nest/core/themes/themes.dart';
-import 'package:clean_nest/modules/auth/src/ui/viewmodels/setup_profile_viewmodel.dart';
+import 'package:clean_nest/modules/auth/src/ui/viewmodels/profile_viewmodel.dart';
 import 'package:clean_nest/modules/auth/src/ui/widgets/pagination_container_widget.dart';
 import 'package:clean_nest/shared/widgets/buttons/cn_primary_button_widget.dart';
 import 'package:clean_nest/shared/widgets/inputs/cn_primary_input_widget.dart';
@@ -9,20 +9,20 @@ import 'package:clean_nest/shared/widgets/texts/cn_text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-class SetupProfilePage extends StatefulWidget {
-  final SetupProfileViewModel setupProfileViewModel;
+class ProfilePage extends StatefulWidget {
+  final ProfileViewModel profileViewModel;
 
-  const SetupProfilePage({super.key, required this.setupProfileViewModel});
+  const ProfilePage({super.key, required this.profileViewModel});
 
   @override
-  State<SetupProfilePage> createState() => _SetupProfilePageState();
+  State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _SetupProfilePageState extends State<SetupProfilePage> {
+class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    widget.setupProfileViewModel.getCurrentUser();
+    widget.profileViewModel.getCurrentUser();
   }
 
   @override
@@ -48,17 +48,17 @@ class _SetupProfilePageState extends State<SetupProfilePage> {
                 child: PageView(
                   children: [
                     _buildChooseMascotPage(
-                        widget.setupProfileViewModel, themeSpacing, size),
+                        widget.profileViewModel, themeSpacing, size),
                     _buildCreateRotineGroupPage(
                       context,
-                      widget.setupProfileViewModel,
+                      widget.profileViewModel,
                       themeSpacing,
                       themeTextStyle!,
                       size,
                     ),
                   ],
                   onPageChanged: (index) {
-                    widget.setupProfileViewModel.setPageIndex(index);
+                    widget.profileViewModel.setPageIndex(index);
                   },
                 ),
               ),
@@ -74,7 +74,7 @@ class _SetupProfilePageState extends State<SetupProfilePage> {
                   itemBuilder: (context, index) {
                     return ValueListenableBuilder<int>(
                       valueListenable:
-                          widget.setupProfileViewModel.pageIndexNotifier,
+                          widget.profileViewModel.pageIndexNotifier,
                       builder: (context, currentPageIndex, child) {
                         return PaginationContainerWidget(
                           index: index + 1,
@@ -89,7 +89,7 @@ class _SetupProfilePageState extends State<SetupProfilePage> {
                 alignment: Alignment.bottomRight,
                 child: TextButton(
                     onPressed: () async {
-                      await widget.setupProfileViewModel.updateUser();
+                      await widget.profileViewModel.updateUser();
                       Modular.to.pushNamed('/home/');
                     },
                     child: const Text('Finalizar')),
@@ -103,7 +103,7 @@ class _SetupProfilePageState extends State<SetupProfilePage> {
 }
 
 Widget _buildChooseMascotPage(
-  SetupProfileViewModel setupProfileViewModel,
+  ProfileViewModel setupProfileViewModel,
   CnSpacing themeSpacing,
   Size size,
 ) {
@@ -163,7 +163,7 @@ Widget _buildChooseMascotPage(
 
 Widget _buildCreateRotineGroupPage(
   BuildContext context,
-  SetupProfileViewModel setupProfileViewModel,
+  ProfileViewModel setupProfileViewModel,
   CnSpacing themeSpacing,
   CnTextStyles themeTextStyle,
   Size size,

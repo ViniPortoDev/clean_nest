@@ -11,3 +11,7 @@ class AuthTokenError extends AuthError {
 class AuthLoginError extends AuthError {
   AuthLoginError() : super(message: "Erro ao realizar login.");
 }
+
+class UserNotFound extends AuthError {
+  UserNotFound() : super(message: "Usuario não encontrado.");
+}
