@@ -5,7 +5,8 @@ class StorageError extends Failure {
 }
 
 class StorageReadError extends StorageError {
-  StorageReadError( {required String message}) : super(message: "Erro ao ler os dados do armazenamento.");
+  StorageReadError({required String message})
+      : super(message: "Erro ao ler os dados do armazenamento.");
 }
 
 class StorageWriteError extends StorageError {
@@ -13,7 +14,7 @@ class StorageWriteError extends StorageError {
       : super(message: "Erro ao salvar os dados no armazenamento.");
 }
 
-class StorageDeleteError extends StorageError {
-  StorageDeleteError({required String message})
+class StorageClearError extends StorageError {
+  StorageClearError({required String message})
       : super(message: "Erro ao remover os dados do armazenamento.");
 }

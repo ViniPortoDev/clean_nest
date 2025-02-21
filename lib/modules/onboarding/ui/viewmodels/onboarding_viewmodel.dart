@@ -7,7 +7,7 @@ class OnboardingViewModel extends ChangeNotifier {
 
   OnboardingViewModel({required this.sharedPreferencesRepository});
   Future<void> completeOnboarding() async {
-    await sharedPreferencesRepository.saveBool('isFirstLaunch', false);
+    await sharedPreferencesRepository.setBool('isFirstLaunch', false);
     Modular.to.navigate('/home');
   }
 }

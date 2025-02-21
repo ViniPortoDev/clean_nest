@@ -7,7 +7,7 @@ import 'package:clean_nest/modules/auth/src/domain/repositories/auth_repository.
 import 'package:clean_nest/modules/auth/src/domain/repositories/choose_mascot_repository.dart';
 import 'package:clean_nest/modules/auth/src/data/repositories/choose_mascot_repository_impl.dart';
 import 'package:clean_nest/modules/auth/src/domain/repositories/group_repository.dart';
-import 'package:clean_nest/modules/auth/src/domain/usecases/create_user.dart';
+import 'package:clean_nest/modules/auth/src/domain/usecases/register_user.dart';
 import 'package:clean_nest/modules/auth/src/domain/usecases/get_current_user.dart';
 import 'package:clean_nest/modules/auth/src/domain/usecases/update_user.dart';
 import 'package:clean_nest/modules/auth/src/ui/pages/setup_profile_page.dart';

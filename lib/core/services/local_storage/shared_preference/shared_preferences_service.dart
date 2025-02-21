@@ -10,7 +10,7 @@ class SharedPreferencesService implements LocalStorage {
   }
 
   @override
-  Future<void> saveString(String key, String value) async {
+  Future<void> setString(String key, String value) async {
     await _prefs.setString(key, value);
   }
 
@@ -20,7 +20,7 @@ class SharedPreferencesService implements LocalStorage {
   }
 
   @override
-  Future<void> saveInt(String key, int value) async {
+  Future<void> setInt(String key, int value) async {
     await _prefs.setInt(key, value);
   }
 
@@ -30,7 +30,7 @@ class SharedPreferencesService implements LocalStorage {
   }
 
   @override
-  Future<void> saveBool(String key, bool value) async {
+  Future<void> setBool(String key, bool value) async {
     await _prefs.setBool(key, value);
   }
 
@@ -43,6 +43,4 @@ class SharedPreferencesService implements LocalStorage {
   Future<void> remove(String key) async {
     await _prefs.remove(key);
   }
-
-
 }

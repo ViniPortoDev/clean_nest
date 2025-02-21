@@ -92,7 +92,7 @@ class _SetupProfilePageState extends State<SetupProfilePage> {
                       await widget.setupProfileViewModel.updateUser();
                       Modular.to.pushNamed('/home/');
                     },
-                    child: Text('Finalizar')),
+                    child: const Text('Finalizar')),
               ),
             ],
           ),

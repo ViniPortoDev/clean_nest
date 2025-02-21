@@ -11,6 +11,16 @@ class UserRepositoryImpl implements UserRepository {
   UserRepositoryImpl({required this.userLocalDataSource});
 
   @override
+  Future<Either<Failure, void>> createUser(User user) async {
+    try {
+      await userLocalDataSource.createUser(user.toModel());
+      return right(null);
+    } catch (e) {
+      return left(UnexpectedFailure(message: "Erro ao criar usuário: $e"));
+    }
+  }
+
+  @override
   Future<Either<Failure, User?>> getCurrentUser() async {
     try {
       final result = await userLocalDataSource.getCurrentUser();
@@ -28,7 +38,7 @@ class UserRepositoryImpl implements UserRepository {
     try {
       return await userLocalDataSource.saveUser(user.toModel());
     } catch (e) {
-      return left(UnexpectedFailure(message:  "Erro ao salvar usuário: $e"));
+      return left(UnexpectedFailure(message: "Erro ao salvar usuário: $e"));
     }
   }
 
@@ -43,10 +53,6 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<Either<Failure, void>> clearUser() async {
-    try {
-      return await userLocalDataSource.clearUser();
-    } catch (e) {
-      return left(UnexpectedFailure(message: "Erro ao remover usuário: $e"));
-    }
+    return await userLocalDataSource.clearUser();
   }
 }

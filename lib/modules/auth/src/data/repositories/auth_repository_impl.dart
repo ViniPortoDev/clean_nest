@@ -44,24 +44,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   // updateUser method
-  @override
-  Future<Either<Failure, void>> updateUser(User user) async {
-    try {
-      final userModel = UserModel(
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        password: user.password,
-        mascot: user.mascot,
-        groups: user.groups,
-      );
-      final userMap = userModel.toMap();
-      await localDatasource.saveUser(userMap);
-      return const Right(null); // Sucesso
-    } catch (e) {
-      return Left(StorageError(message: "Erro ao atualizar o usuário"));
-    }
-  }
+  
 
   // login method
   @override
@@ -101,33 +84,5 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   // getCurrentUser method
-  @override
-  Future<Either<Failure, User?>> getCurrentUser() async {
-    try {
-      final userModelEither = await localDatasource.getCurrentUser();
-
-      return userModelEither.fold(
-        (error) {
-          return Left(error); // Retorna o erro específico
-        },
-        (userModel) {
-          if (userModel != null) {
-            final user = User(
-              id: userModel.id,
-              name: userModel.name,
-              email: userModel.email,
-              password: userModel.password,
-              mascot: userModel.mascot,
-              groups: userModel.groups,
-            );
-            return Right(user);
-          }
-          return const Right(null); // Usuário não encontrado
-        },
-      );
-    } catch (e) {
-      return Left(StorageError(
-          message: "Erro ao obter o usuário local: ${e.toString()}"));
-    }
-  }
+  
 }

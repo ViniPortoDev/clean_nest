@@ -41,7 +41,7 @@ class AuthLocalDatasourceImpl implements AuthLocalDatasource {
   @override
   Future<Either<Failure, void>> saveUser(Map<String, dynamic> user) async {
     try {
-      await sharedPreferencesService.saveString(_userKey, jsonEncode(user));
+      await sharedPreferencesService.setString(_userKey, jsonEncode(user));
       return const Right(null); // Retorna sucesso sem valor adicional
     } catch (e) {
       return Left(StorageWriteError(
@@ -55,7 +55,7 @@ class AuthLocalDatasourceImpl implements AuthLocalDatasource {
       await sharedPreferencesService.remove(_userKey);
       return const Right(null); // Retorna sucesso sem valor adicional
     } catch (e) {
-      return Left(StorageDeleteError(
+      return Left(StorageClearError(
           message: 'Erro ao limpar o usuário do armazenamento local.'));
     }
   }
