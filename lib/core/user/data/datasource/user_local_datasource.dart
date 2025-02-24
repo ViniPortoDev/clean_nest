@@ -9,42 +9,14 @@ import 'package:flutter/foundation.dart';
 
 abstract class UserLocalDatasource {
   Future<Either<Failure, void>> saveUser(UserModel user);
-  Future<Either<Failure, void>> updateUser(UserModel user);
   Future<Either<Failure, UserModel?>> getCurrentUser();
   Future<Either<Failure, void>> clearUser();
-  Future<Either<Failure, void>> createUser(UserModel user);
 }
 
 class UserLocalDatasourceImpl implements UserLocalDatasource {
   final Logger logger = Logger();
   final LocalStorage localStorage;
   UserLocalDatasourceImpl({required this.localStorage});
-
-  //Verify if user already exists and Create a new user
-  @override
-  Future<Either<Failure, void>> createUser(UserModel user) async {
-    try {
-      //TODO isso aqui nao faz sentido pq o getCurrentUser() não busca os usuários do banco de dados
-      final currentUser = await getCurrentUser();
-      return currentUser.fold(
-        (failure) => Left(failure),
-        (existingUser) {
-          if (existingUser != null) {
-            return Left(StorageWriteError(message: 'Usuário já existe'));
-          } else {
-            return saveUser(user);
-          }
-        },
-      );
-    } catch (e) {
-      if (kDebugMode) {
-        logger.d("Erro ao criar usuário: $e");
-      } else {
-        logger.e("Erro ao criar usuário: [Erro interno]");
-      }
-      return Left(StorageWriteError(message: 'Erro ao criar usuário: $e'));
-    }
-  }
 
   // Get user from local storage
   @override
@@ -81,33 +53,7 @@ class UserLocalDatasourceImpl implements UserLocalDatasource {
     }
   }
 
-  // Update user in local storage
-  @override
-  Future<Either<Failure, void>> updateUser(UserModel user) async {
-    try {
-      final currentUser = await getCurrentUser();
-
-      return currentUser.fold(
-        (failure) => Left(failure),
-        (existingUser) async {
-          if (existingUser == null) {
-            return Left(StorageWriteError(message: 'Usuário não encontrado'));
-          } else {
-            final userJson = jsonEncode(user.toMap());
-            await localStorage.setString('user', userJson);
-            return right(null);
-          }
-        },
-      );
-    } catch (e) {
-      if (kDebugMode) {
-        logger.d("Erro ao atualizar usuário: $e");
-      } else {
-        logger.e("Erro ao atualizar usuário: [Erro interno]");
-      }
-      return Left(StorageWriteError(message: 'Erro ao atualizar usuário'));
-    }
-  }
+ 
 
   // Clear user from local storage
   @override

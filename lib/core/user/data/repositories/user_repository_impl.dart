@@ -10,15 +10,7 @@ class UserRepositoryImpl implements UserRepository {
 
   UserRepositoryImpl({required this.userLocalDataSource});
 
-  @override
-  Future<Either<Failure, void>> createUser(User user) async {
-    try {
-      await userLocalDataSource.createUser(user.toModel());
-      return right(null);
-    } catch (e) {
-      return left(UnexpectedFailure(message: "Erro ao criar usuário: $e"));
-    }
-  }
+  
 
   @override
   Future<Either<Failure, User?>> getCurrentUser() async {
@@ -42,14 +34,7 @@ class UserRepositoryImpl implements UserRepository {
     }
   }
 
-  @override
-  Future<Either<Failure, void>> updateUser(User user) async {
-    try {
-      return await userLocalDataSource.updateUser(user.toModel());
-    } catch (e) {
-      return left(UnexpectedFailure(message: "Erro ao atualizar usuário: $e"));
-    }
-  }
+  
 
   @override
   Future<Either<Failure, void>> clearUser() async {

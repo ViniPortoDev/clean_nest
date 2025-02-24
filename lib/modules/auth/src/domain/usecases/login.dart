@@ -4,15 +4,15 @@ import 'package:dartz/dartz.dart';
 import 'package:clean_nest/core/errors/failure.dart';
 import 'package:clean_nest/core/user/domain/usecases/save_user.dart';
 
-abstract class LoginUserUseCase {
+abstract class LoginUseCase {
   Future<Either<Failure, User>> call(String email, String password);
 }
 
-class LoginUser implements LoginUserUseCase {
+class Login implements LoginUseCase {
   final AuthRepository authRepository;
   final SaveUserUseCase saveUser;
 
-  LoginUser(this.authRepository, this.saveUser);
+  Login(this.authRepository, this.saveUser);
 
   @override
   Future<Either<Failure, User>> call(String email, String password) async {

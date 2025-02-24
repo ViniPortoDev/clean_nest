@@ -22,7 +22,9 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    widget.profileViewModel.getCurrentUser();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      widget.profileViewModel.initialize();
+    });
   }
 
   @override
@@ -50,12 +52,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     _buildChooseMascotPage(
                         widget.profileViewModel, themeSpacing, size),
                     _buildCreateRotineGroupPage(
-                      context,
-                      widget.profileViewModel,
-                      themeSpacing,
-                      themeTextStyle!,
-                      size,
-                    ),
+                        context,
+                        widget.profileViewModel,
+                        themeSpacing,
+                        themeTextStyle!,
+                        size),
                   ],
                   onPageChanged: (index) {
                     widget.profileViewModel.setPageIndex(index);
@@ -89,8 +90,19 @@ class _ProfilePageState extends State<ProfilePage> {
                 alignment: Alignment.bottomRight,
                 child: TextButton(
                     onPressed: () async {
-                      await widget.profileViewModel.updateUser();
-                      Modular.to.pushNamed('/home/');
+                      await widget.profileViewModel.updateProfile().then(
+                        (isSuccess) {
+                          if (!isSuccess) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Erro ao atualizar o perfil'),
+                              ),
+                            );
+                          } else {
+                            Modular.to.pushNamed('/home/');
+                          }
+                        },
+                      );
                     },
                     child: const Text('Finalizar')),
               ),
@@ -186,24 +198,18 @@ Widget _buildCreateRotineGroupPage(
         textAlign: TextAlign.center,
       ),
       SizedBox(height: themeSpacing.spacing24px),
-
-      // Campo de texto para o nome do grupo
       CnPrimaryTextInput(
         hintText: 'Nome do Grupo',
         controller: setupProfileViewModel.groupNameController,
       ),
       SizedBox(height: themeSpacing.spacing24px),
-
-      // Botão para criar o grupo
       CnPrimaryButtonWidget(
         title: 'Criar Grupo',
         onPressed: () {
           setupProfileViewModel.createGroup();
-          // Se for necessário exibir algo aqui, deixe o ViewModel controlar a lógica
         },
         height: 70,
       ),
-
       SizedBox(height: themeSpacing.spacing24px),
     ],
   );

@@ -1,4 +1,4 @@
-import 'package:clean_nest/core/user/domain/usecases/create_user.dart';
+import 'package:clean_nest/core/user/domain/usecases/save_user.dart';
 import 'package:clean_nest/modules/auth/src/domain/repositories/auth_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:clean_nest/core/errors/failure.dart';
@@ -12,9 +12,9 @@ abstract class RegisterUserUseCase {
 
 class RegisterUser {
   final AuthRepository authRepository;
-  final CreateUser createUser;
+  final SaveUser saveUser;
 
-  RegisterUser(this.authRepository, this.createUser);
+  RegisterUser(this.authRepository, this.saveUser);
 
   Future<Either<Failure, User>> call({
     required String email,
@@ -25,7 +25,7 @@ class RegisterUser {
     return authResult.fold(
       (failure) => Left(failure),
       (user) async {
-        final saveResult = await createUser(user);
+        final saveResult = await saveUser(user);
         return saveResult.fold(
           (failure) => left(failure), 
           (_) => right(user), 

@@ -6,7 +6,7 @@ class User {
   final String name;
   final String email;
   final String password;
-  final Mascot? mascot; // Mascot pode ser nulo até ser escolhido
+  final Mascot? mascot; 
   final List<Group> groups;
 
   User({
