@@ -22,7 +22,7 @@ class UserLocalDatasourceImpl implements UserLocalDatasource {
   @override
   Future<Either<Failure, UserModel?>> getCurrentUser() async {
     try {
-      String? user = localStorage.getString('user');
+      String? user = await localStorage.getString('user');
       if (user != null) {
         return Right(UserModel.fromMap(jsonDecode(user)));
       }

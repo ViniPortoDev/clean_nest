@@ -1,3 +1,4 @@
+import 'package:clean_nest/core/user/user_module.dart';
 import 'package:clean_nest/modules/auth/src/data/datasources/auth_remote_datasource.dart';
 import 'package:clean_nest/modules/auth/src/data/repositories/auth_repository_impl.dart';
 import 'package:clean_nest/modules/auth/src/domain/repositories/auth_repository.dart';
@@ -14,6 +15,9 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 class AuthModule extends Module {
   @override
+  List<Module> get imports => [UserModule()];
+
+  @override
   void binds(i) {
     //datasources
     i.addSingleton<AuthRemoteDatasource>(AuthRemoteDatasourceImpl.new);
@@ -27,8 +31,8 @@ class AuthModule extends Module {
     i.add<LogoutUsecase>(Logout.new);
 
     //Viewmodels
-    i.addSingleton(ProfileViewModel.new);
-    i.addSingleton(AuthViewmodel.new);
+    i.addLazySingleton(ProfileViewModel.new);
+    i.addLazySingleton(AuthViewmodel.new);
   }
 
   @override
@@ -40,9 +44,7 @@ class AuthModule extends Module {
             ));
     r.child(
       '/setup_profile',
-      child: (context) => ProfilePage(
-        profileViewModel: context.read()..fetchMascots(),
-      ),
+      child: (context) => ProfilePage(profileViewModel: context.read()),
     );
     r.child('/create_rotine_group',
         child: (context) => const CreateRotineGroupPage());

@@ -8,19 +8,17 @@ class SplashViewModel extends BaseViewModel {
   final DelaySplashUseCase delaySplashUseCase;
   final LocalStorage localStorage;
 
-  SplashViewModel(
-      {required this.delaySplashUseCase, required this.localStorage});
+  SplashViewModel({
+    required this.delaySplashUseCase,
+    required this.localStorage,
+  });
 
   void startSplash() async {
     setLoading(true);
     await delaySplashUseCase.execute();
-    bool? isFirstLaunch = localStorage.getBool('isFirstLaunch');
+    bool isFirstLaunch = await localStorage.getBool('isFirstLaunch') ?? true;
     setLoading(false);
 
-    if (isFirstLaunch!) {
-      Modular.to.pushNamedAndRemoveUntil('/onboarding/', (route) => false);
-    } else {
-      Modular.to.pushNamedAndRemoveUntil('/home/', (route) => false);
-    }
+    Modular.to.navigate(isFirstLaunch ? '/onboarding/' : '/auth/');
   }
 }

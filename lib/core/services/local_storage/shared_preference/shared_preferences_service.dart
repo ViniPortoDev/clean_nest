@@ -2,42 +2,57 @@ import 'package:clean_nest/core/services/local_storage/local_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesService implements LocalStorage {
-  final SharedPreferences prefs;
+  static SharedPreferences? _prefs;
 
-  SharedPreferencesService({required this.prefs});
+  Future<SharedPreferences> _getPrefs () async {
+    _prefs ??= await SharedPreferences.getInstance();
+    return _prefs!;
+  }
 
   @override
   Future<void> setString(String key, String value) async {
+    final prefs = await _getPrefs();
     await prefs.setString(key, value);
   }
 
   @override
-  String? getString(String key) {
+     Future<String?> getString(String key) async {
+    final prefs = await _getPrefs();
     return prefs.getString(key);
   }
 
   @override
   Future<void> setInt(String key, int value) async {
+    final prefs = await _getPrefs();
+
     await prefs.setInt(key, value);
   }
 
   @override
-  int? getInt(String key) {
+  Future<int?> getInt(String key) async {
+    final prefs = await _getPrefs();
+
     return prefs.getInt(key);
   }
 
   @override
   Future<void> setBool(String key, bool value) async {
+    final prefs = await _getPrefs();
+
     await prefs.setBool(key, value);
   }
 
   @override
-  bool? getBool(String key) {
+ Future <bool?> getBool(String key) async {
+    final prefs = await _getPrefs();
+
     return prefs.getBool(key);
   }
 
   @override
   Future<void> remove(String key) async {
+    final prefs = await _getPrefs();
+
     await prefs.remove(key);
   }
 }
