@@ -25,14 +25,13 @@ class UserRepositoryImpl implements UserRepository {
     }
   }
 
+  //TODO nao usar trycatch aqui pois é redundante
+
   @override
-  Future<Either<Failure, void>> saveUser(User user) async {
-    try {
-      return await userLocalDataSource.saveUser(user.toModel());
-    } catch (e) {
-      return left(UnexpectedFailure(message: "Erro ao salvar usuário: $e"));
-    }
-  }
+Future<Either<Failure, void>> saveUser(User user) async {
+  return await userLocalDataSource.saveUser(user.toModel());
+  // Se user.toModel() lançar exceções, adicione um try/catch aqui.
+}
 
   
 

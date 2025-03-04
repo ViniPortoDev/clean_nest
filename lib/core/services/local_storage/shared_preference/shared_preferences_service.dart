@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SharedPreferencesService implements LocalStorage {
   static SharedPreferences? _prefs;
 
-  Future<SharedPreferences> _getPrefs () async {
+  Future<SharedPreferences> _getPrefs() async {
     _prefs ??= await SharedPreferences.getInstance();
     return _prefs!;
   }
@@ -16,7 +16,7 @@ class SharedPreferencesService implements LocalStorage {
   }
 
   @override
-     Future<String?> getString(String key) async {
+  Future<String?> getString(String key) async {
     final prefs = await _getPrefs();
     return prefs.getString(key);
   }
@@ -43,7 +43,7 @@ class SharedPreferencesService implements LocalStorage {
   }
 
   @override
- Future <bool?> getBool(String key) async {
+  Future<bool?> getBool(String key) async {
     final prefs = await _getPrefs();
 
     return prefs.getBool(key);
@@ -54,5 +54,12 @@ class SharedPreferencesService implements LocalStorage {
     final prefs = await _getPrefs();
 
     await prefs.remove(key);
+  }
+
+  @override
+  Future<void> clearAll() async {
+    final prefs = await _getPrefs();
+    await prefs.clear();
+    _prefs = null;
   }
 }
