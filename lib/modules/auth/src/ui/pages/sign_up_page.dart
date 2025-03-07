@@ -74,7 +74,7 @@ class SignUpPage extends StatelessWidget {
           CnPrimaryButtonWidget(
             title: 'Continuar',
             onPressed: () async {
-              authViewmodel.createUser(
+              authViewmodel.registerUser(
                 nameController.text,
                 emailController.text,
                 passwordController.text,

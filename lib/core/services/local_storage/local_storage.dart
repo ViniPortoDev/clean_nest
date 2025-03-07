@@ -1,13 +1,11 @@
 abstract class LocalStorage {
-  Future<void> saveString(String key, String value);
-  String? getString(String key);
+  Future<String?> getString(String key);
+  Future<int?> getInt(String key);
+  Future<bool?> getBool(String key);
 
-  Future<void> saveInt(String key, int value);
-  int? getInt(String key);
-
-  Future<void> saveBool(String key, bool value);
-  bool? getBool(String key);
-
+  Future<void> setString(String key, String value);
+  Future<void> setBool(String key, bool value);
+  Future<void> setInt(String key, int value);
   Future<void> remove(String key);
-  Future<void> clear();
+  Future<void> clearAll();
 }

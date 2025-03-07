@@ -1,45 +1,38 @@
-import 'package:clean_nest/core/core_module.dart';
-import 'package:clean_nest/modules/auth/src/data/datasources/auth_local_datasource.dart';
+import 'package:clean_nest/core/user/user_module.dart';
 import 'package:clean_nest/modules/auth/src/data/datasources/auth_remote_datasource.dart';
 import 'package:clean_nest/modules/auth/src/data/repositories/auth_repository_impl.dart';
-import 'package:clean_nest/modules/auth/src/data/repositories/group_repository_impl.dart';
 import 'package:clean_nest/modules/auth/src/domain/repositories/auth_repository.dart';
-import 'package:clean_nest/modules/auth/src/domain/repositories/choose_mascot_repository.dart';
-import 'package:clean_nest/modules/auth/src/data/repositories/choose_mascot_repository_impl.dart';
-import 'package:clean_nest/modules/auth/src/domain/repositories/group_repository.dart';
-import 'package:clean_nest/modules/auth/src/domain/usecases/create_user.dart';
-import 'package:clean_nest/modules/auth/src/domain/usecases/get_current_user.dart';
-import 'package:clean_nest/modules/auth/src/ui/pages/setup_profile_page.dart';
+import 'package:clean_nest/modules/auth/src/domain/usecases/login.dart';
+import 'package:clean_nest/modules/auth/src/domain/usecases/logout.dart';
+import 'package:clean_nest/modules/auth/src/domain/usecases/register_user.dart';
+import 'package:clean_nest/modules/auth/src/ui/pages/profile_page.dart';
 import 'package:clean_nest/modules/auth/src/ui/pages/create_rotine_group_page.dart';
 import 'package:clean_nest/modules/auth/src/ui/pages/sign_in_page.dart';
 import 'package:clean_nest/modules/auth/src/ui/pages/sign_up_page.dart';
 import 'package:clean_nest/modules/auth/src/ui/viewmodels/auth_viewmodel.dart';
-import 'package:clean_nest/modules/auth/src/ui/viewmodels/setup_profile_viewmodel.dart';
+import 'package:clean_nest/modules/auth/src/ui/viewmodels/profile_viewmodel.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class AuthModule extends Module {
   @override
-  List<Module> get imports => [CoreModule()];
+  List<Module> get imports => [UserModule()];
 
   @override
   void binds(i) {
-    //Viewmodels
-    i.addSingleton(SetupProfileViewModel.new);
-    i.addSingleton(AuthViewmodel.new);
-
     //datasources
-    i.addSingleton<AuthLocalDatasource>(AuthLocalDatasourceImpl.new);
     i.addSingleton<AuthRemoteDatasource>(AuthRemoteDatasourceImpl.new);
 
     //Repositories
     i.addSingleton<AuthRepository>(AuthRepositoryImpl.new);
-    i.addSingleton<GroupRepository>(GroupRepositoryImpl.new);
-    i.addSingleton<ChooseMascotRepository>(ChooseMascotRepositoryImpl.new);
 
-    //Usecases
-    i.addLazySingleton<CreateUserUsecase>(CreateUser.new);
-    i.addLazySingleton<GetCurrentUserUsecase>(GetCurrentUser.new);
+    //UseCases
+    i.add<RegisterUserUseCase>(RegisterUser.new);
+    i.add<LoginUseCase>(Login.new);
+    i.add<LogoutUsecase>(Logout.new);
 
+    //Viewmodels
+    i.addLazySingleton(ProfileViewModel.new);
+    i.addLazySingleton(AuthViewmodel.new);
   }
 
   @override
@@ -51,9 +44,7 @@ class AuthModule extends Module {
             ));
     r.child(
       '/setup_profile',
-      child: (context) => SetupProfilePage(
-        setupProfileViewModel: context.read()..loadMascots(),
-      ),
+      child: (context) => ProfilePage(profileViewModel: context.read()),
     );
     r.child('/create_rotine_group',
         child: (context) => const CreateRotineGroupPage());

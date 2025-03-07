@@ -1,29 +1,30 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
+import 'package:clean_nest/core/entities/member.dart';
+import 'package:clean_nest/modules/home/src/domain/entities/task.dart';
 
 class Group {
   final int id;
   final String name;
-  // final List<Member> membersList;
-  // final List<Task> tasks;
+  final List<Member> members;
+  final List<Task> tasks;
 
-  Group({required this.id, required this.name});
+  Group(
+      {required this.id,
+      required this.name,
+      required this.members,
+      required this.tasks});
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'id': id,
-      'name': name,
-    };
-  }
-
-  factory Group.fromMap(Map<String, dynamic> map) {
+  Group copyWith({
+    int? id,
+    String? name,
+    List<Member>? members,
+    List<Task>? tasks,
+  }) {
     return Group(
-      id: map['id'] as int,
-      name: map['name'] as String,
+      id: id ?? this.id,
+      name: name ?? this.name,
+      members: members ?? List.unmodifiable(this.members),
+      tasks: tasks ?? List.unmodifiable(this.tasks),
     );
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory Group.fromJson(String source) => Group.fromMap(json.decode(source) as Map<String, dynamic>);
 }

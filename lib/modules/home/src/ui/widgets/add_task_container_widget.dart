@@ -20,7 +20,7 @@ class AddTaskContainerWidget extends StatelessWidget {
         height: 200,
         width: size.width,
         decoration: BoxDecoration(
-          color: Color.fromARGB(255, 211, 197, 248),
+          color: const Color.fromARGB(255, 211, 197, 248),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
