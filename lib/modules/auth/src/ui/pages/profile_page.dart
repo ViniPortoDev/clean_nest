@@ -1,7 +1,7 @@
 import 'package:clean_nest/core/themes/theme_spacings.dart';
 import 'package:clean_nest/core/themes/theme_text_styles.dart';
 import 'package:clean_nest/core/themes/themes.dart';
-import 'package:clean_nest/modules/auth/src/ui/viewmodels/setup_profile_viewmodel.dart';
+import 'package:clean_nest/modules/auth/src/ui/viewmodels/profile_viewmodel.dart';
 import 'package:clean_nest/modules/auth/src/ui/widgets/pagination_container_widget.dart';
 import 'package:clean_nest/shared/widgets/buttons/cn_primary_button_widget.dart';
 import 'package:clean_nest/shared/widgets/inputs/cn_primary_input_widget.dart';
@@ -9,20 +9,22 @@ import 'package:clean_nest/shared/widgets/texts/cn_text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-class SetupProfilePage extends StatefulWidget {
-  final SetupProfileViewModel setupProfileViewModel;
+class ProfilePage extends StatefulWidget {
+  final ProfileViewModel profileViewModel;
 
-  const SetupProfilePage({super.key, required this.setupProfileViewModel});
+  const ProfilePage({super.key, required this.profileViewModel});
 
   @override
-  State<SetupProfilePage> createState() => _SetupProfilePageState();
+  State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _SetupProfilePageState extends State<SetupProfilePage> {
+class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    widget.setupProfileViewModel.getCurrentUser();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // widget.profileViewModel.initialize();
+    });
   }
 
   @override
@@ -48,17 +50,16 @@ class _SetupProfilePageState extends State<SetupProfilePage> {
                 child: PageView(
                   children: [
                     _buildChooseMascotPage(
-                        widget.setupProfileViewModel, themeSpacing, size),
+                        widget.profileViewModel, themeSpacing, size),
                     _buildCreateRotineGroupPage(
-                      context,
-                      widget.setupProfileViewModel,
-                      themeSpacing,
-                      themeTextStyle!,
-                      size,
-                    ),
+                        context,
+                        widget.profileViewModel,
+                        themeSpacing,
+                        themeTextStyle!,
+                        size),
                   ],
                   onPageChanged: (index) {
-                    widget.setupProfileViewModel.setPageIndex(index);
+                    widget.profileViewModel.setPageIndex(index);
                   },
                 ),
               ),
@@ -74,7 +75,7 @@ class _SetupProfilePageState extends State<SetupProfilePage> {
                   itemBuilder: (context, index) {
                     return ValueListenableBuilder<int>(
                       valueListenable:
-                          widget.setupProfileViewModel.pageIndexNotifier,
+                          widget.profileViewModel.pageIndexNotifier,
                       builder: (context, currentPageIndex, child) {
                         return PaginationContainerWidget(
                           index: index + 1,
@@ -89,10 +90,21 @@ class _SetupProfilePageState extends State<SetupProfilePage> {
                 alignment: Alignment.bottomRight,
                 child: TextButton(
                     onPressed: () async {
-                      await widget.setupProfileViewModel.updateUser();
-                      Modular.to.pushNamed('/home/');
+                      await widget.profileViewModel.updateProfile().then(
+                        (isSuccess) {
+                          if (!isSuccess) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Erro ao atualizar o perfil'),
+                              ),
+                            );
+                          } else {
+                            Modular.to.pushNamed('/home/');
+                          }
+                        },
+                      );
                     },
-                    child: Text('Finalizar')),
+                    child: const Text('Finalizar')),
               ),
             ],
           ),
@@ -103,7 +115,7 @@ class _SetupProfilePageState extends State<SetupProfilePage> {
 }
 
 Widget _buildChooseMascotPage(
-  SetupProfileViewModel setupProfileViewModel,
+  ProfileViewModel setupProfileViewModel,
   CnSpacing themeSpacing,
   Size size,
 ) {
@@ -163,7 +175,7 @@ Widget _buildChooseMascotPage(
 
 Widget _buildCreateRotineGroupPage(
   BuildContext context,
-  SetupProfileViewModel setupProfileViewModel,
+  ProfileViewModel setupProfileViewModel,
   CnSpacing themeSpacing,
   CnTextStyles themeTextStyle,
   Size size,
@@ -186,24 +198,18 @@ Widget _buildCreateRotineGroupPage(
         textAlign: TextAlign.center,
       ),
       SizedBox(height: themeSpacing.spacing24px),
-
-      // Campo de texto para o nome do grupo
       CnPrimaryTextInput(
         hintText: 'Nome do Grupo',
         controller: setupProfileViewModel.groupNameController,
       ),
       SizedBox(height: themeSpacing.spacing24px),
-
-      // Botão para criar o grupo
       CnPrimaryButtonWidget(
         title: 'Criar Grupo',
         onPressed: () {
           setupProfileViewModel.createGroup();
-          // Se for necessário exibir algo aqui, deixe o ViewModel controlar a lógica
         },
         height: 70,
       ),
-
       SizedBox(height: themeSpacing.spacing24px),
     ],
   );
