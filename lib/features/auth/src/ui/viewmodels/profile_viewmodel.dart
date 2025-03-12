@@ -10,8 +10,8 @@ import 'package:injectable/injectable.dart';
 
 @Injectable()
 class ProfileViewModel extends BaseViewModel {
-  final GetCurrentUser getCurrentUser;
-  final SaveUser saveUser;
+  final GetCurrentUserUseCase getCurrentUser;
+  final SaveUserUseCase saveUser;
 
   ProfileViewModel(this.getCurrentUser, this.saveUser);
 

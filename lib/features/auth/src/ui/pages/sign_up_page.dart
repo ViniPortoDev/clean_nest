@@ -13,7 +13,7 @@ import 'package:go_router/go_router.dart';
 class SignUpPage extends StatelessWidget {
   final AuthViewmodel authViewmodel;
   const SignUpPage({super.key, required this.authViewmodel});
-  
+
   @override
   Widget build(BuildContext context) {
     final TextEditingController nameController =
@@ -74,12 +74,12 @@ class SignUpPage extends StatelessWidget {
           CnPrimaryButtonWidget(
             title: 'Continuar',
             onPressed: () async {
-              authViewmodel.registerUser(
-                nameController.text,
-                emailController.text,
-                passwordController.text,
-              );
-              context.pushNamed('setup_profile');
+              // await authViewmodel.registerUser(
+              //   nameController.text,
+              //   emailController.text,
+              //   passwordController.text,
+              // );
+              context.goNamed('setup_profile');
             },
             height: 70,
           ),

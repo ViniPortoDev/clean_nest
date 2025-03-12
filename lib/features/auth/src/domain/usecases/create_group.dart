@@ -12,8 +12,8 @@ abstract class CreateGroupUsecase {
 
 @Injectable(as: CreateGroupUsecase)
 class CreateGroup implements CreateGroupUsecase {
-  final SaveUser saveUser;
-  final GetCurrentUser getCurrentUser;
+  final SaveUserUseCase saveUser;
+  final GetCurrentUserUseCase getCurrentUser;
 
   CreateGroup(this.saveUser, this.getCurrentUser);
 

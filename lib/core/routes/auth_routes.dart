@@ -9,23 +9,27 @@ import 'package:clean_nest/features/auth/src/ui/pages/create_rotine_group_page.d
 
 final authRoutes = [
   GoRoute(
-    path: 'sign_in', 
+    name: 'sign_in',
+    path: 'sign_in',
     builder: (context, state) => const SignInPage(),
   ),
   GoRoute(
-    path: 'sign_up', 
+    name: 'sign_up',
+    path: 'sign_up',
     builder: (context, state) => SignUpPage(
       authViewmodel: getIt.get<AuthViewmodel>(),
     ),
   ),
   GoRoute(
-    path: 'setup_profile', 
+    name: 'setup_profile',
+    path: 'setup_profile',
     builder: (context, state) => ProfilePage(
       profileViewModel: getIt.get<ProfileViewModel>(),
     ),
   ),
   GoRoute(
-    path: 'create_rotine_group', 
+    name: 'create_rotine_group',
+    path: 'create_rotine_group',
     builder: (context, state) => const CreateRotineGroupPage(),
   ),
 ];

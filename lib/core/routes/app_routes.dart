@@ -1,4 +1,10 @@
 import 'package:clean_nest/core/routes/auth_routes.dart';
+import 'package:clean_nest/features/auth/src/ui/pages/create_rotine_group_page.dart';
+import 'package:clean_nest/features/auth/src/ui/pages/profile_page.dart';
+import 'package:clean_nest/features/auth/src/ui/pages/sign_in_page.dart';
+import 'package:clean_nest/features/auth/src/ui/pages/sign_up_page.dart';
+import 'package:clean_nest/features/auth/src/ui/viewmodels/auth_viewmodel.dart';
+import 'package:clean_nest/features/auth/src/ui/viewmodels/profile_viewmodel.dart';
 import 'package:clean_nest/features/home/src/ui/viewmodels/home_viewmodel.dart';
 import 'package:clean_nest/features/home/src/ui/viewmodels/task_viewmodel.dart';
 import 'package:clean_nest/features/onboarding/ui/viewmodels/onboarding_viewmodel.dart';
@@ -38,8 +44,31 @@ final appRouter = GoRouter(
     // Auth
     GoRoute(
       path: '/auth',
-      redirect: (context, state) => '/auth/sign_up',
-      routes: authRoutes,
+      pageBuilder: (context, state) => MaterialPage(
+        key: state.pageKey,
+        child: SignUpPage(
+          authViewmodel: getIt.get<AuthViewmodel>(),
+        ),
+      ),
+      routes: [
+        GoRoute(
+          name: 'sign_in',
+          path: 'sign_in',
+          builder: (context, state) => const SignInPage(),
+        ),
+        GoRoute(
+          name: 'setup_profile',
+          path: 'setup_profile',
+          builder: (context, state) => ProfilePage(
+            profileViewModel: getIt.get<ProfileViewModel>(),
+          ),
+        ),
+        GoRoute(
+          name: 'create_rotine_group',
+          path: 'create_rotine_group',
+          builder: (context, state) => const CreateRotineGroupPage(),
+        ),
+      ],
     ),
 
     // Home

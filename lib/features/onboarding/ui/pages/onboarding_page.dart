@@ -38,7 +38,7 @@ class OnboardingPage extends StatelessWidget {
               CnPrimaryButtonWidget(
                 title: 'Criar conta',
                 onPressed: () {
-                  context.go('/auth/sign_up');
+                  context.go('/auth');
                 },
                 height: 70,
               ),

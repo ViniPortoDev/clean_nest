@@ -13,7 +13,7 @@ abstract class RegisterUserUseCase {
 @Injectable(as: RegisterUserUseCase)
 class RegisterUser implements RegisterUserUseCase {
   final AuthRepository authRepository;
-  final SaveUser saveUser;
+  final SaveUserUseCase saveUser;
 
   RegisterUser(this.authRepository, this.saveUser);
 
