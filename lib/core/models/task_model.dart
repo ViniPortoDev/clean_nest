@@ -1,5 +1,5 @@
 import 'package:clean_nest/core/models/member_model.dart';
-import 'package:clean_nest/modules/home/src/domain/entities/task.dart';
+import 'package:clean_nest/features/home/src/domain/entities/task.dart';
 
 class TaskModel extends Task {
   TaskModel({

@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:clean_nest/core/entities/member.dart';
-import 'package:clean_nest/modules/home/src/domain/entities/task.dart';
+import 'package:clean_nest/features/home/src/domain/entities/task.dart';
 
 class Group {
   final int id;

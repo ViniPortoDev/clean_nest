@@ -22,14 +22,14 @@ void main() {
 
       // Act
       await service.setString(key, value);
-      final result = await service.getString(key);
+      final result =  service.getString(key);
 
       // Assert
       expect(result, value);
     });
 
     test('Deve retornar null para uma chave não existente (String)', () async {
-      final result = await service.getString('unknown_key');
+      final result =  service.getString('unknown_key');
       expect(result, isNull);
     });
 
@@ -39,13 +39,13 @@ void main() {
       const value = 42;
 
       await service.setInt(key, value);
-      final result = await service.getInt(key);
+      final result =  service.getInt(key);
 
       expect(result, value);
     });
 
     test('Deve retornar null para uma chave não existente (int)', () async {
-      final result = await service.getInt('unknown_key');
+      final result =  service.getInt('unknown_key');
       expect(result, isNull);
     });
 
@@ -55,13 +55,13 @@ void main() {
       const value = true;
 
       await service.setBool(key, value);
-      final result = await service.getBool(key);
+      final result =  service.getBool(key);
 
       expect(result, value);
     });
 
     test('Deve retornar null para uma chave não existente (bool)', () async {
-      final result = await service.getBool('unknown_key');
+      final result =  service.getBool('unknown_key');
       expect(result, isNull);
     });
 
@@ -71,7 +71,7 @@ void main() {
       await service.setString(key, 'value');
 
       await service.remove(key);
-      final result = await service.getString(key);
+      final result =  service.getString(key);
 
       expect(result, isNull);
     });
@@ -83,8 +83,8 @@ void main() {
 
       await service.clearAll();
 
-      expect(await service.getString('key1'), isNull);
-      expect(await service.getInt('key2'), isNull);
+      expect( service.getString('key1'), isNull);
+      expect( service.getInt('key2'), isNull);
     });
   });
 }

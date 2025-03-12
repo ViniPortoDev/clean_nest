@@ -1,6 +1,6 @@
 import 'package:clean_nest/core/entities/user.dart';
-import 'package:clean_nest/modules/auth/src/data/models/group_model.dart';
-import 'package:clean_nest/modules/auth/src/data/models/mascot_model.dart';
+import 'package:clean_nest/features/auth/src/data/models/group_model.dart';
+import 'package:clean_nest/features/auth/src/data/models/mascot_model.dart';
 
 class UserModel extends User {
   UserModel({

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 import 'package:clean_nest/core/errors/failure.dart';
 import 'package:clean_nest/core/models/user_model.dart';
@@ -13,6 +14,7 @@ abstract class UserLocalDatasource {
   Future<Either<Failure, void>> clearUser();
 }
 
+@LazySingleton(as: UserLocalDatasource)
 class UserLocalDatasourceImpl implements UserLocalDatasource {
   final Logger logger = Logger();
   final LocalStorage localStorage;
@@ -22,7 +24,7 @@ class UserLocalDatasourceImpl implements UserLocalDatasource {
   @override
   Future<Either<Failure, UserModel?>> getCurrentUser() async {
     try {
-      String? user = await localStorage.getString('user');
+      String? user =  localStorage.getString('user');
       if (user != null) {
         return Right(UserModel.fromMap(jsonDecode(user)));
       }

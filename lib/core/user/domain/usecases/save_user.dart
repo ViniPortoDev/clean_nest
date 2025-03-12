@@ -2,11 +2,13 @@ import 'package:clean_nest/core/entities/user.dart';
 import 'package:clean_nest/core/errors/failure.dart';
 import 'package:clean_nest/core/user/domain/repositories/user_repository.dart';
 import 'package:dartz/dartz.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class SaveUserUseCase {
   Future<Either<Failure, void>> call(User user);
 }
 
+@Injectable(as: SaveUserUseCase)
 class SaveUser implements SaveUserUseCase {
   final UserRepository repository;
 

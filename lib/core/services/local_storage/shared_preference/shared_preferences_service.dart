@@ -1,65 +1,37 @@
 import 'package:clean_nest/core/services/local_storage/local_storage.dart';
+import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+@LazySingleton(as: LocalStorage)
 class SharedPreferencesService implements LocalStorage {
-  static SharedPreferences? _prefs;
+  final SharedPreferences _prefs;
 
-  Future<SharedPreferences> _getPrefs() async {
-    _prefs ??= await SharedPreferences.getInstance();
-    return _prefs!;
-  }
+  SharedPreferencesService(this._prefs);
 
   @override
-  Future<void> setString(String key, String value) async {
-    final prefs = await _getPrefs();
-    await prefs.setString(key, value);
-  }
+  String? getString(String key) => _prefs.getString(key);
 
   @override
-  Future<String?> getString(String key) async {
-    final prefs = await _getPrefs();
-    return prefs.getString(key);
-  }
+  int? getInt(String key) => _prefs.getInt(key);
 
   @override
-  Future<void> setInt(String key, int value) async {
-    final prefs = await _getPrefs();
-
-    await prefs.setInt(key, value);
-  }
+  bool? getBool(String key) => _prefs.getBool(key);
 
   @override
-  Future<int?> getInt(String key) async {
-    final prefs = await _getPrefs();
-
-    return prefs.getInt(key);
-  }
+  Future<void> setString(String key, String value) async =>
+      await _prefs.setString(key, value);
 
   @override
-  Future<void> setBool(String key, bool value) async {
-    final prefs = await _getPrefs();
-
-    await prefs.setBool(key, value);
-  }
+  Future<void> setInt(String key, int value) async =>
+      await _prefs.setInt(key, value);
 
   @override
-  Future<bool?> getBool(String key) async {
-    final prefs = await _getPrefs();
-
-    return prefs.getBool(key);
-  }
+  Future<void> setBool(String key, bool value) async =>
+      await _prefs.setBool(key, value);
 
   @override
-  Future<void> remove(String key) async {
-    final prefs = await _getPrefs();
-
-    await prefs.remove(key);
-  }
+  Future<void> remove(String key) async => await _prefs.remove(key);
 
   @override
-  Future<void> clearAll() async {
-    final prefs = await _getPrefs();
-    await prefs.clear();
-    _prefs = null;
-  }
+  Future<void> clearAll() async => await _prefs.clear();
 }

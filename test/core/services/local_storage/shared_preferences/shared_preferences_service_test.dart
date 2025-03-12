@@ -2,6 +2,8 @@ import 'package:clean_nest/core/services/local_storage/shared_preference/shared_
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
+//TODO corrigir todos testes unitarios
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -15,7 +17,7 @@ void main() {
 
     test('Deve retornar o valor salvo no SharedPreferences', () async {
       // Act
-      final result = await service.getString('key');
+      final result =  service.getString('key');
 
       // Assert
       expect(result, 'value');
@@ -24,7 +26,7 @@ void main() {
     // Exemplo de teste negativo para chave não existente
     test('Deve retornar null para chave não existente', () async {
       // Act
-      final result = await service.getString('unknown_key');
+      final result =  service.getString('unknown_key');
 
       // Assert
       expect(result, isNull);

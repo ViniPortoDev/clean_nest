@@ -1,6 +1,6 @@
 import 'package:clean_nest/core/themes/themes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
+import 'package:go_router/go_router.dart';
 
 class CnAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
@@ -43,7 +43,7 @@ class CnAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
           ? IconButton(
               icon: const Icon(Icons.arrow_back_ios_new_rounded),
               color: cnColorScheme.cnBlack,
-              onPressed: () => Modular.to.pop(),
+              onPressed: () => context.pop(),
             )
           : const SizedBox.shrink(),
       actions: actions,
