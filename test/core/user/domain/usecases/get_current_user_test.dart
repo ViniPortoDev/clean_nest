@@ -18,6 +18,7 @@ void main() {
     test('Deve salvar e recuperar uma String corretamente', () async {
       // Arrange
       const key = 'test_key';
+
       const value = 'test_value';
 
       // Act

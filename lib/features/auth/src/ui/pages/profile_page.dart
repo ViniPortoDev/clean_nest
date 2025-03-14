@@ -23,7 +23,7 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // widget.profileViewModel.initialize();
+      widget.profileViewModel.initialize();
     });
   }
 
@@ -99,7 +99,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                             );
                           } else {
-                            context.pushNamed('home');
+                            context.push('/home');
                           }
                         },
                       );

@@ -22,33 +22,24 @@ final appRouter = GoRouter(
     // Splash
     GoRoute(
       path: '/',
-      pageBuilder: (context, state) => MaterialPage(
-        key: state.pageKey,
-        child: SplashPage(
-          splashViewModel: getIt.get<SplashViewModel>(),
-        ),
+      builder: (context, state) => SplashPage(
+        splashViewModel: getIt.get<SplashViewModel>(),
       ),
     ),
 
     // Onboarding
     GoRoute(
       path: '/onboarding',
-      pageBuilder: (context, state) => MaterialPage(
-        key: state.pageKey,
-        child: OnboardingPage(
-          onboardingViewModel: getIt.get<OnboardingViewModel>(),
-        ),
+      builder: (context, state) => OnboardingPage(
+        onboardingViewModel: getIt.get<OnboardingViewModel>(),
       ),
     ),
 
     // Auth
     GoRoute(
       path: '/auth',
-      pageBuilder: (context, state) => MaterialPage(
-        key: state.pageKey,
-        child: SignUpPage(
-          authViewmodel: getIt.get<AuthViewmodel>(),
-        ),
+      builder: (context, state) => SignUpPage(
+        authViewmodel: getIt.get<AuthViewmodel>(),
       ),
       routes: [
         GoRoute(
@@ -74,12 +65,9 @@ final appRouter = GoRouter(
     // Home
     GoRoute(
       path: '/home',
-      pageBuilder: (context, state) => MaterialPage(
-        key: state.pageKey,
-        child: HomePage(
-          taskViewModel: getIt.get<TaskViewModel>(),
-          homeViewmodel: getIt.get<HomeViewmodel>(),
-        ),
+      builder: (context, state) => HomePage(
+        taskViewModel: getIt.get<TaskViewModel>(),
+        homeViewmodel: getIt.get<HomeViewmodel>(),
       ),
     ),
   ],
