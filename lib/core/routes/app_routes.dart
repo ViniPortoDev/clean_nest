@@ -3,8 +3,8 @@ import 'package:clean_nest/features/auth/src/ui/pages/create_rotine_group_page.d
 import 'package:clean_nest/features/auth/src/ui/pages/profile_page.dart';
 import 'package:clean_nest/features/auth/src/ui/pages/sign_in_page.dart';
 import 'package:clean_nest/features/auth/src/ui/pages/sign_up_page.dart';
-import 'package:clean_nest/features/auth/src/ui/viewmodels/auth_viewmodel.dart';
-import 'package:clean_nest/features/auth/src/ui/viewmodels/profile_viewmodel.dart';
+import 'package:clean_nest/features/auth/src/ui/bloc/auth_viewmodel.dart';
+import 'package:clean_nest/features/auth/src/ui/bloc/profile_viewmodel.dart';
 import 'package:clean_nest/features/home/src/ui/viewmodels/home_viewmodel.dart';
 import 'package:clean_nest/features/home/src/ui/viewmodels/task_viewmodel.dart';
 import 'package:clean_nest/features/onboarding/ui/viewmodels/onboarding_viewmodel.dart';

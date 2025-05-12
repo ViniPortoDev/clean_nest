@@ -40,9 +40,9 @@ import 'package:clean_nest/features/auth/src/domain/usecases/register_user.dart'
     as _i500;
 import 'package:clean_nest/features/auth/src/domain/usecases/select_mascot.dart'
     as _i19;
-import 'package:clean_nest/features/auth/src/ui/viewmodels/auth_viewmodel.dart'
+import 'package:clean_nest/features/auth/src/ui/bloc/auth_viewmodel.dart'
     as _i528;
-import 'package:clean_nest/features/auth/src/ui/viewmodels/profile_viewmodel.dart'
+import 'package:clean_nest/features/auth/src/ui/bloc/profile_viewmodel.dart'
     as _i1013;
 import 'package:clean_nest/features/home/src/ui/viewmodels/home_viewmodel.dart'
     as _i848;

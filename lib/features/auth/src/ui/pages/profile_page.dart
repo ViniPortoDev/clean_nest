@@ -1,7 +1,7 @@
 import 'package:clean_nest/core/themes/theme_spacings.dart';
 import 'package:clean_nest/core/themes/theme_text_styles.dart';
 import 'package:clean_nest/core/themes/themes.dart';
-import 'package:clean_nest/features/auth/src/ui/viewmodels/profile_viewmodel.dart';
+import 'package:clean_nest/features/auth/src/ui/bloc/profile_viewmodel.dart';
 import 'package:clean_nest/features/auth/src/ui/widgets/pagination_container_widget.dart';
 import 'package:clean_nest/shared/widgets/buttons/cn_primary_button_widget.dart';
 import 'package:clean_nest/shared/widgets/inputs/cn_primary_input_widget.dart';

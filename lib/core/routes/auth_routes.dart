@@ -1,5 +1,5 @@
-import 'package:clean_nest/features/auth/src/ui/viewmodels/auth_viewmodel.dart';
-import 'package:clean_nest/features/auth/src/ui/viewmodels/profile_viewmodel.dart';
+import 'package:clean_nest/features/auth/src/ui/bloc/auth_viewmodel.dart';
+import 'package:clean_nest/features/auth/src/ui/bloc/profile_viewmodel.dart';
 import 'package:clean_nest/injection/injection_container.dart';
 import 'package:go_router/go_router.dart';
 import 'package:clean_nest/features/auth/src/ui/pages/sign_in_page.dart';
